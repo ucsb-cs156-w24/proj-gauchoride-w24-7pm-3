@@ -8,6 +8,7 @@ import DriverList from "main/pages/DriverList";
 import RideRequestCreatePage from "main/pages/Ride/RideRequestCreatePage";
 import RideRequestEditPage from "main/pages/Ride/RideRequestEditPage";
 import RideRequestIndexPage from "main/pages/Ride/RideRequestIndexPage";
+import RiderApplicationEditPage from "main/pages/RiderApplicationEditPage"
 import ShiftPage from "main/pages/ShiftPage";
 import ChatPage from "main/pages/ChatPage";
 
@@ -52,11 +53,15 @@ function App() {
           (hasRole(currentUser, "ROLE_ADMIN")  || hasRole(currentUser, "ROLE_RIDER") )&& <Route exact path="/ride/edit/:id" element={<RideRequestEditPage />} />
         }
         {
+          (hasRole(currentUser, "ROLE_USER") || hasRole(currentUser, "ROLE_ADMIN")) &&  <Route exact path="/ride/apply/edit/:id" element={<RiderApplicationEditPage />} />
+        }
+        {
           (hasRole(currentUser, "ROLE_DRIVER") || hasRole(currentUser, "ROLE_ADMIN"))  && <Route exact path="/chat" element={<ChatPage />} />
         }
         {
           hasRole(currentUser, "ROLE_ADMIN") && <Route exact path="/shift/list" element={<ShiftPage />} />
         }
+        
         {
           (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_DRIVER") || hasRole(currentUser, "ROLE_RIDER") )&& <Route exact path="/shift/" element={<ShiftIndexPage />} />
         }
