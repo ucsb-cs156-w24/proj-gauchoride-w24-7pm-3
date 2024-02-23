@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-w24/proj-gauchoride-w24-7pm-3
 owner: ucsb-cs156-w24
 repo_name: proj-gauchoride-w24-7pm-3
-pull_requests: []
+pull_requests: [{"author":{"id":"MDQ6VXNlcjY4MTY0Njk0","is_bot":false,"login":"cydthe","name":""},"headRefName":"cg-readablechat","number":20,"title":"Make chat messages more readable","url":"https://github.com/ucsb-cs156-w24/proj-gauchoride-w24-7pm-3/pull/20"}]
