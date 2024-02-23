@@ -1,4 +1,5 @@
-import React from 'react'
+import { useCurrentUser } from 'main/utils/currentUser';
+import React, { useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +19,16 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
    
     const testIdPrefix = "RiderApplicationForm";
 
+    const { data: currentUser } = useCurrentUser();
+    const [ isAdmin, setAdmin ] = useState(false);
+    const [userEmail, setUserEmail] = useState(null);
+
+    useEffect(() => {
+        setUserEmail(currentUser.root?.user?.email)
+    }, [currentUser]);
+    useEffect(() => {
+        setAdmin(currentUser.root?.user?.admin);
+    }, [currentUser]);
 
     return (
 
@@ -32,20 +43,6 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                         type="text"
                         {...register("id")}
                         defaultValue={initialContents?.id}
-                        disabled
-                    />
-                </Form.Group>
-            )}
-
-            {initialContents && (
-                <Form.Group className="mb-3" >
-                    <Form.Label htmlFor="userId">Applicant Id</Form.Label>
-                    <Form.Control
-                        data-testid={testIdPrefix + "-userId"}
-                        id="userId"
-                        type="text"
-                        {...register("userId")}
-                        defaultValue={initialContents?.userId}
                         disabled
                     />
                 </Form.Group>
@@ -72,7 +69,7 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                     id="email"
                     type="text"
                     {...register("email")}
-                    defaultValue={initialContents?.email}
+                    defaultValue={initialContents?.email || userEmail}
                     disabled
                 />
             </Form.Group>
@@ -100,11 +97,12 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                         type="text"
                         {...register("updated_date")}
                         defaultValue={initialContents?.updated_date}
+                        disabled
                     />
                 </Form.Group>
             )}
 
-            {initialContents && (
+            {initialContents?.cancelled_date && (
                 <Form.Group className="mb-3" >
                     <Form.Label htmlFor="cancelled_date">Date Cancelled</Form.Label>
                     <Form.Control
@@ -113,19 +111,6 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                         type="text"
                         {...register("cancelled_date")}
                         defaultValue={initialContents?.cancelled_date}
-                    />
-                </Form.Group>
-            )}
-
-            {initialContents && (
-                <Form.Group className="mb-3" >
-                    <Form.Label htmlFor="notes">Notes</Form.Label>
-                    <Form.Control
-                        data-testid={testIdPrefix + "-notes"}
-                        id="notes"
-                        type="text"
-                        {...register("notes")}
-                        defaultValue={initialContents?.notes}
                         disabled
                     />
                 </Form.Group>
@@ -176,6 +161,21 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                     {errors.description?.message}
                 </Form.Control.Feedback>
             </Form.Group>
+
+            {initialContents?.notes && (
+                <Form.Group className="mb-3" >
+                    <Form.Label htmlFor="notes">Notes</Form.Label>
+                    <Form.Control
+                        data-testid={testIdPrefix + "-notes"}
+                        id="notes"
+                        type="text"
+                        {...register("notes")}
+                        placeholder="e.g. Your application is in review."  
+                        defaultValue={initialContents?.notes}
+                        disabled={initialContents && !isAdmin}
+                    />
+                </Form.Group>
+            )}
 
             <Button
                 type="submit"
