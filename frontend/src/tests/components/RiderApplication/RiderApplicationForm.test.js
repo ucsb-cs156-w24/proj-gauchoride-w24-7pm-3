@@ -13,7 +13,8 @@ jest.mock('react-router-dom', () => ({
     useNavigate: () => mockedNavigate
 }));
 
-describe("RiderApplicationForm tests", () => {
+
+describe("RiderApplicationForm when editing tests", () => {
     const queryClient = new QueryClient();
 
     const expectedHeaders = ["Email", "Perm Number", "Description"];
@@ -34,6 +35,12 @@ describe("RiderApplicationForm tests", () => {
             const header = screen.getByText(headerText);
             expect(header).toBeInTheDocument();
           });
+        
+        expect(screen.queryByText(/Status/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Date Applied/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Date Updated/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Date Cancelled/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Notes/)).not.toBeInTheDocument();
 
     });
 
@@ -48,10 +55,19 @@ describe("RiderApplicationForm tests", () => {
 
         expect(await screen.findByText(/Apply/)).toBeInTheDocument();
 
+
         expectedHeaders.forEach((headerText) => {
             const header = screen.getByText(headerText);
             expect(header).toBeInTheDocument();
         });
+
+        expect(screen.getByText(/Status/)).toBeInTheDocument();
+        expect(screen.getByText(/Date Applied/)).toBeInTheDocument();
+        expect(screen.getByText(/Date Updated/)).toBeInTheDocument();
+        expect(screen.getByText(/Date Cancelled/)).toBeInTheDocument();
+        expect(screen.getByText(/Notes/)).toBeInTheDocument();
+
+
     });
 
 
@@ -70,5 +86,35 @@ describe("RiderApplicationForm tests", () => {
 
         await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
     });
+
+    test("that the correct validations are performed", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Router>
+                    <RiderApplicationForm />
+                </Router>
+            </QueryClientProvider>
+        );
+
+        // required text input
+
+        const submitButton = screen.getByTestId(`${testId}-submit`);
+        fireEvent.click(submitButton);
+
+        await screen.findByText(/Perm Number is required./);
+        expect(screen.getByText(/Perm Number is required./)).toBeInTheDocument();
+
+        await screen.findByText(/Description is required./);
+        expect(screen.getByText(/Description is required./)).toBeInTheDocument();
+
+        // exactly 7 char for perm
+        const permInput = screen.getByTestId(`${testId}-perm_number`);
+        fireEvent.change(permInput, { target: { value: "a".repeat(256) } });
+        fireEvent.click(submitButton);
+        await screen.findByText(/Perm Number must be exactly 7 characters long./);
+        expect(screen.getByText(/Perm Number must be exactly 7 characters long./)).toBeInTheDocument();
+
+
+    })
 
 });
