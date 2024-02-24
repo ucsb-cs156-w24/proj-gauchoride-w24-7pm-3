@@ -47,7 +47,7 @@ EditRegularUser.parameters = {
 EditRegularUser.args = {
     initialContents: riderApplicationFixtures.oneRiderApplication,
     submitText: "Update",
-    submitAction: () => {
+    submitAction: (data) => {
         console.log("Submit was clicked with data: ", data);
         window.alert("Submit was clicked with data: " + JSON.stringify(data));
     }
