@@ -27,6 +27,10 @@ function createRideRequest(currentUser) {
   }
 }
 
+function notRider(currentUser) {
+  return !(hasRole(currentUser, "ROLE_RIDER")) 
+}
+
 export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUrl = window.location.href }) {
   const styles = {
     navbar: {
@@ -105,6 +109,11 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
               {
                 hasRole(currentUser, "ROLE_DRIVER") && (
                   <Nav.Link id ="appnavbar-driver-link" data-testid="appnavbar-driver" as={Link} to="/driver">Drivers Page</Nav.Link>
+                )
+              }
+              { 
+                notRider(currentUser) && (
+                <Nav.Link id ="appnavbar-rider-link" data-testid="appnavbar-rider" as={Link} to="/apply/rider">Apply to be a Rider</Nav.Link>
                 )
               }
             </Nav>
