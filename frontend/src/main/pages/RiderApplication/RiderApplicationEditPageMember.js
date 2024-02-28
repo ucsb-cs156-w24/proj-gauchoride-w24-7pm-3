@@ -63,8 +63,6 @@ export default function RiderApplicationEditPage() {
                 {riderApplication &&
                 <RiderApplicationForm initialContents={riderApplication} submitAction={onSubmit} buttonLabel="Edit" />
                 }
-                <RiderApplicationForm initialContents={riderApplication} buttonLabel="Edit" />
-
             </div>
         </BasicLayout>
     )
