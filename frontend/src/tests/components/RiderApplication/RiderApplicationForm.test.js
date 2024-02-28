@@ -4,6 +4,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 import RiderApplicationForm from "main/components/RiderApplication/RiderApplicationForm";
 import { riderApplicationFixtures } from "fixtures/riderApplicationFixtures";
 
+import { apiCurrentUserFixtures} from "fixtures/currentUserFixtures";
+import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
+import axios from "axios";
+import AxiosMockAdapter from "axios-mock-adapter";
+
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const mockedNavigate = jest.fn();
@@ -17,6 +22,15 @@ jest.mock('react-router-dom', () => ({
 
 describe("RiderApplicationForm when editing tests", () => {
     const queryClient = new QueryClient();
+    const axiosMock = new AxiosMockAdapter(axios);
+
+    beforeEach(() => {
+        axiosMock.reset();
+        axiosMock.resetHistory();
+        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.adminOnly);
+        axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
+        axiosMock.onGet("/api/riderApplication", { params: { id: 17 } }).timeout();
+    });
 
     const expectedHeaders = ["Email", "Perm Number", "Description"];
     const testId = "RiderApplicationForm";
@@ -25,7 +39,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm submitAction={() => {}}/>
+                    <RiderApplicationForm submitAction={() => { }} />
                 </Router>
             </QueryClientProvider>
         );
@@ -35,13 +49,39 @@ describe("RiderApplicationForm when editing tests", () => {
         expectedHeaders.forEach((headerText) => {
             const header = screen.getByText(headerText);
             expect(header).toBeInTheDocument();
-          });
-        
+        });
+
         expect(screen.queryByText(/Status/)).not.toBeInTheDocument();
         expect(screen.queryByText(/Date Applied/)).not.toBeInTheDocument();
         expect(screen.queryByText(/Date Updated/)).not.toBeInTheDocument();
         expect(screen.queryByText(/Date Cancelled/)).not.toBeInTheDocument();
-        expect(screen.queryByText(/Notes/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Notes/)).toBeInTheDocument();
+
+    });
+
+    test("renders correctly with no submitAction", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Router>
+                    <RiderApplicationForm initialContents={riderApplicationFixtures.oneRiderApplication} />
+                </Router>
+            </QueryClientProvider>
+        );
+
+        expect(await screen.findByText(/Application Id/)).toBeInTheDocument();
+
+        expectedHeaders.forEach((headerText) => {
+            const header = screen.getByText(headerText);
+            expect(header).toBeInTheDocument();
+        });
+
+        expect(screen.getByText(/Status/)).toBeInTheDocument();
+        expect(screen.getByText(/Date Applied/)).toBeInTheDocument();
+        expect(screen.getByText(/Date Updated/)).toBeInTheDocument();
+        expect(screen.getByText(/Date Cancelled/)).toBeInTheDocument();
+        expect(screen.getByText(/Notes/)).toBeInTheDocument();
+
+        expect(screen.queryByText(/Apply/)).not.toBeInTheDocument();
 
     });
 
@@ -49,7 +89,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm initialContents={riderApplicationFixtures.oneRiderApplication} submitAction={() => {}}/>
+                    <RiderApplicationForm initialContents={riderApplicationFixtures.oneRiderApplication} submitAction={() => { }} />
                 </Router>
             </QueryClientProvider>
         );
@@ -76,7 +116,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm submitAction={() => {}}/>
+                    <RiderApplicationForm submitAction={() => { }} />
                 </Router>
             </QueryClientProvider>
         );
@@ -92,7 +132,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm submitAction={() => {}} />
+                    <RiderApplicationForm submitAction={() => { }} />
                 </Router>
             </QueryClientProvider>
         );
