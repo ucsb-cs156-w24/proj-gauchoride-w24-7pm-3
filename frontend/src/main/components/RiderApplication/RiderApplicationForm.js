@@ -24,7 +24,6 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
 
     useEffect(() => {
         setAdmin(currentUser.root?.user?.admin);
-        console.log('submit action', submitAction)
     }, [currentUser]);
 
     return (
@@ -161,7 +160,7 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                 </Form.Control.Feedback>
             </Form.Group>
 
-            {initialContents?.notes && (
+            {(initialContents?.notes || isAdmin) && (
                 <Form.Group className="mb-3" >
                     <Form.Label htmlFor="notes">Notes</Form.Label>
                     <Form.Control
@@ -171,7 +170,7 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                         {...register("notes")}
                         placeholder="e.g. Your application is in review."
                         defaultValue={initialContents?.notes}
-                        disabled={initialContents && !isAdmin && !submitAction}
+                        disabled={!isAdmin || !submitAction}
                     />
                 </Form.Group>
             )}
