@@ -4,9 +4,9 @@ import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
 
-function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Apply" }) {
+function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Apply", email }) {
     const navigate = useNavigate();
-    
+
     // Stryker disable all
     const {
         register,
@@ -16,18 +16,15 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
         { defaultValues: initialContents }
     );
     // Stryker enable all
-   
+
     const testIdPrefix = "RiderApplicationForm";
 
     const { data: currentUser } = useCurrentUser();
-    const [ isAdmin, setAdmin ] = useState(false);
-    const [userEmail, setUserEmail] = useState(null);
+    const [isAdmin, setAdmin] = useState(false);
 
     useEffect(() => {
-        setUserEmail(currentUser.root?.user?.email)
-    }, [currentUser]);
-    useEffect(() => {
         setAdmin(currentUser.root?.user?.admin);
+        console.log('submit action', submitAction)
     }, [currentUser]);
 
     return (
@@ -69,7 +66,7 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                     id="email"
                     type="text"
                     {...register("email")}
-                    defaultValue={initialContents?.email || userEmail}
+                    defaultValue={email}
                     disabled
                 />
             </Form.Group>
@@ -87,7 +84,7 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                     />
                 </Form.Group>
             )}
-            
+
             {initialContents && (
                 <Form.Group className="mb-3" >
                     <Form.Label htmlFor="updated_date">Date Updated</Form.Label>
@@ -136,6 +133,7 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                     })}
                     placeholder="e.g. 0000000"
                     defaultValue={initialContents?.perm_number}
+                    disabled={!submitAction}
                 />
                 <Form.Control.Feedback type="invalid">
                     {errors.perm_number?.message}
@@ -144,7 +142,7 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
 
             <Form.Group className="mb-3" >
                 <Form.Label htmlFor="description">Description</Form.Label>
-                <Form.Label style={{ display: 'block', fontSize: '80%', fontStyle: 'italic', color: '#888' }}>Please describe the mobility limitations that cause you to need to use the Gauchoride service.</Form.Label>                        
+                <Form.Label style={{ display: 'block', fontSize: '80%', fontStyle: 'italic', color: '#888' }}>Please describe the mobility limitations that cause you to need to use the Gauchoride service.</Form.Label>
                 <Form.Control
                     data-testid={testIdPrefix + "-description"}
                     id="description"
@@ -153,9 +151,10 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                     {...register("description", {
                         required: "Description is required."
                     })}
-                    placeholder="e.g. My legs are broken."  
+                    placeholder="e.g. My legs are broken."
                     defaultValue={initialContents?.description}
                     style={{ width: '100%', minHeight: '10rem', resize: 'vertical', verticalAlign: 'top' }}
+                    disabled={!submitAction}
                 />
                 <Form.Control.Feedback type="invalid">
                     {errors.description?.message}
@@ -170,27 +169,33 @@ function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Ap
                         id="notes"
                         type="text"
                         {...register("notes")}
-                        placeholder="e.g. Your application is in review."  
+                        placeholder="e.g. Your application is in review."
                         defaultValue={initialContents?.notes}
-                        disabled={initialContents && !isAdmin}
+                        disabled={initialContents && !isAdmin && !submitAction}
                     />
                 </Form.Group>
             )}
 
-            <Button
-                type="submit"
-                data-testid={testIdPrefix + "-submit"}
-            >
-                {buttonLabel}
-            </Button>
-            
-            <Button
-                variant="Secondary"
-                onClick={() => navigate(-1)}
-                data-testid={testIdPrefix + "-cancel"}
-            >
-                Cancel
-            </Button>
+            {submitAction && (
+                <>
+                    <Button
+                        type="submit"
+                        data-testid={testIdPrefix + "-submit"}
+                    >
+                        {buttonLabel}
+                    </Button>
+
+                    <Button
+                        variant="Secondary"
+                        onClick={() => navigate(-1)}
+                        data-testid={testIdPrefix + "-cancel"}
+                    >
+                        Cancel
+                    </Button>
+                </>
+
+            )}
+
 
         </Form>
 
