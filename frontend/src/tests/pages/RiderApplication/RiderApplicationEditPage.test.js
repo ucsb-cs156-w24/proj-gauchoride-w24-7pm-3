@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, queryByTestId, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import RiderApplicationEditPageMember from "main/pages/RiderApplication/RiderApplicationEditPageMember";
@@ -126,18 +126,18 @@ describe("RiderApplicationEditPage tests", () => {
             const emailField =getByTestId("RiderApplicationForm-email");
             const createdDateField =getByTestId("RiderApplicationForm-created_date");
             const updatedDateField =getByTestId("RiderApplicationForm-updated_date");
-            const cancelledDateField =getByTestId("RiderApplicationForm-cancelled_date");
+            const cancelledDateField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
             const descriptionField = getByTestId("RiderApplicationForm-description");
-            const notesField =getByTestId("RiderApplicationForm-notes");
+            const notesField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
 
             expect(statusField).toHaveValue("pending");
             expect(permNumberField).toHaveValue("1234567");
             expect(emailField).toHaveValue("random@example.org");
             expect(createdDateField).toHaveValue("2023-04-17");
             expect(updatedDateField).toHaveValue("2023-04-17");
-            expect(cancelledDateField).toHaveValue("");
+            expect(cancelledDateField).not.toBeInTheDocument()
             expect(descriptionField).toHaveValue("");
-            expect(notesField).toHaveValue("");
+            expect(notesField).not.toBeInTheDocument();
             
         });
 
@@ -160,9 +160,9 @@ describe("RiderApplicationEditPage tests", () => {
             const emailField =getByTestId("RiderApplicationForm-email");
             const createdDateField =getByTestId("RiderApplicationForm-created_date");
             const updatedDateField =getByTestId("RiderApplicationForm-updated_date");
-            const cancelledDateField =getByTestId("RiderApplicationForm-cancelled_date");
+            const cancelledDateField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
             const descriptionField = getByTestId("RiderApplicationForm-description");
-            const notesField =getByTestId("RiderApplicationForm-notes");
+            const notesField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
             const submitButton = getByTestId("RiderApplicationForm-submit")
 
             expect(statusField).toHaveValue("pending");
@@ -170,9 +170,9 @@ describe("RiderApplicationEditPage tests", () => {
             expect(emailField).toHaveValue("random@example.org");
             expect(createdDateField).toHaveValue("2023-04-17");
             expect(updatedDateField).toHaveValue("2023-04-17");
-            expect(cancelledDateField).toHaveValue("");
+            expect(cancelledDateField).not.toBeInTheDocument();
             expect(descriptionField).toHaveValue("");
-            expect(notesField).toHaveValue("");
+            expect(notesField).not.toBeInTheDocument();
 
             expect(submitButton).toBeInTheDocument();
 

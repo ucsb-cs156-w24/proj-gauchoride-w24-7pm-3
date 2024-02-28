@@ -14,6 +14,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 
+
 describe("RiderApplicationForm when editing tests", () => {
     const queryClient = new QueryClient();
 
@@ -24,7 +25,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm />
+                    <RiderApplicationForm submitAction={() => {}}/>
                 </Router>
             </QueryClientProvider>
         );
@@ -48,7 +49,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm initialContents={riderApplicationFixtures.oneRiderApplication} />
+                    <RiderApplicationForm initialContents={riderApplicationFixtures.oneRiderApplication} submitAction={() => {}}/>
                 </Router>
             </QueryClientProvider>
         );
@@ -75,7 +76,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm />
+                    <RiderApplicationForm submitAction={() => {}}/>
                 </Router>
             </QueryClientProvider>
         );
@@ -91,7 +92,7 @@ describe("RiderApplicationForm when editing tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Router>
-                    <RiderApplicationForm />
+                    <RiderApplicationForm submitAction={() => {}} />
                 </Router>
             </QueryClientProvider>
         );
