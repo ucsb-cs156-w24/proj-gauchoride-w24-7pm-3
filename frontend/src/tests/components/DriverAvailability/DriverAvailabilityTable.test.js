@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import driverAvailabilityFixtures from "fixtures/driverAvailabilityFixtures";
+import {driverAvailabilityFixtures} from "fixtures/driverAvailabilityFixtures";
 import DriverAvailabilityTable from "main/components/DriverAvailability/DriverAvailabilityTable";
 import { QueryClient, QueryClientProvider } from "react-query";
 
@@ -10,7 +10,7 @@ describe("DriverAvailabilityTable tests", () => {
     test("renders without crashing for empty table", () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <DriverAvailabilityTable drivers={[]} />
+                <DriverAvailabilityTable driverAvailabilities={[]} />
             </QueryClientProvider>
         );
     });
@@ -18,7 +18,7 @@ describe("DriverAvailabilityTable tests", () => {
     test("renders without crashing for three shifts", () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <DriverAvailabilityTable drivers={driverAvailabilityFixtures.threeAvailabilities} />
+                <DriverAvailabilityTable driverAvailabilities={driverAvailabilityFixtures.threeAvailabilities} />
             </QueryClientProvider>
         );
     });
@@ -26,7 +26,7 @@ describe("DriverAvailabilityTable tests", () => {
     test("Has the expected column headers and content", () => {
         const { getByText, getByTestId } = render(
             <QueryClientProvider client={queryClient}>
-                <DriverAvailabilityTable drivers={driverAvailabilityFixtures.threeAvailabilities}/>
+                <DriverAvailabilityTable driverAvailabilities={driverAvailabilityFixtures.threeAvailabilities}/>
             </QueryClientProvider>
         );
     
