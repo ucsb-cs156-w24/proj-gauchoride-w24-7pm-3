@@ -656,6 +656,24 @@ describe("AppNavbar tests", () => {
         expect(chatMenu).not.toBeInTheDocument();        
     });
 
+    test("not render RiderApplication links for rider ", async () => {
+
+        const currentUser = currentUserFixtures.riderOnly;
+        const doLogin = jest.fn();
+
+        const { getByText } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByText("Welcome, Phillip Conrad")).toBeInTheDocument());
+        const chatMenu = screen.queryByText("Apply to be a Rider");
+        expect(chatMenu).not.toBeInTheDocument();        
+    });
+
     test("Driver page link should not appear for a user that is not a participant", async () => {
         const currentUser = currentUserFixtures.userOnly;
         const doLogin = jest.fn();
