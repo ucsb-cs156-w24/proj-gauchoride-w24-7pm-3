@@ -49,7 +49,7 @@ import edu.ucsb.cs156.gauchoride.entities.User;
 <span class="fc" id="L49">                Set&lt;GrantedAuthority&gt; revisedAuthorities = authorities.stream().filter(</span>
 <span class="fc bfc" id="L50" title="All 2 branches covered.">                        grantedAuth -&gt; !grantedAuth.getAuthority().equals(&quot;ROLE_ADMIN&quot;) &amp;&amp; </span>
 <span class="fc bfc" id="L51" title="All 2 branches covered.">                        !grantedAuth.getAuthority().equals(&quot;ROLE_DRIVER&quot;) &amp;&amp;</span>
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">                        !grantedAuth.getAuthority().equals(&quot;ROLE_RIDER&quot;))</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                        !grantedAuth.getAuthority().equals(&quot;ROLE_RIDER&quot;))</span>
 <span class="fc" id="L53">                .collect(Collectors.toSet());</span>
 
 <span class="fc bfc" id="L55" title="All 2 branches covered.">                if (user.getAdmin()) {</span>
