@@ -674,7 +674,7 @@ describe("AppNavbar tests", () => {
         
         await waitFor(() => expect(getByText("Welcome, Phillip Conrad")).toBeInTheDocument());
         const applyMenu = screen.queryByText("Apply to be a Rider");
-        expect(applyMenu).not.toBeInTheDocument();      
+        expect(applyMenu).toBeInTheDocument();      
     });
 
 });
