@@ -63,6 +63,7 @@ public class RoleInterceptorTests extends ControllerTestCase {
                 authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 authorities.add(new SimpleGrantedAuthority("ROLE_DRIVER"));
                 authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+                authorities.add(new SimpleGrantedAuthority("ROLE_RIDER"));
 
                 OAuth2User user = new DefaultOAuth2User(authorities, attributes, "name");
                 Authentication authentication = new OAuth2AuthenticationToken(user, authorities,
@@ -94,6 +95,7 @@ public class RoleInterceptorTests extends ControllerTestCase {
                                 .id(15L)
                                 .admin(false)
                                 .driver(true)
+                                .rider(false)
                                 .build();
                 when(userRepository.findByEmail("cgaucho@ucsb.edu")).thenReturn(Optional.of(user));
 
@@ -134,6 +136,7 @@ public class RoleInterceptorTests extends ControllerTestCase {
                                 .id(15L)
                                 .admin(true)
                                 .driver(false)
+                                .rider(false)
                                 .build();
                 when(userRepository.findByEmail("cgaucho@ucsb.edu")).thenReturn(Optional.of(user));
 
@@ -174,6 +177,7 @@ public class RoleInterceptorTests extends ControllerTestCase {
                                 .id(15L)
                                 .admin(false)
                                 .driver(false)
+                                .rider(false)
                                 .build();
                 when(userRepository.findByEmail("cgaucho2@ucsb.edu")).thenReturn(Optional.of(user));
 
@@ -205,5 +209,51 @@ public class RoleInterceptorTests extends ControllerTestCase {
                 assertTrue(role_admin, "ROLE_ADMIN should not be in roles list");
                 assertTrue(role_driver, "ROLE_DRIVER should be in roles list");
                 assertTrue(role_member, "ROLE_MEMBER should be in roles list");
+        }
+
+        @Test
+        public void updates_rider_role_when_user_rider_false() throws Exception {
+                User user = User.builder()
+                                .email("cgaucho@ucsb.edu")
+                                .id(15L)
+                                .admin(true)
+                                .driver(false)
+                                .rider(false)
+                                .build();
+
+                when(userRepository.findByEmail("cgaucho@ucsb.edu")).thenReturn(Optional.of(user));
+
+                MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/currentUser");
+                HandlerExecutionChain chain = mapping.getHandler(request);
+                MockHttpServletResponse response = new MockHttpServletResponse();
+
+                assert chain != null;
+                Optional<HandlerInterceptor> RoleInterceptor = chain.getInterceptorList()
+                                .stream()
+                                .filter(RoleInterceptor.class::isInstance)
+                                .findFirst();
+
+                assertTrue(RoleInterceptor.isPresent());
+
+                RoleInterceptor.get().preHandle(request, response, chain.getHandler());
+
+                verify(userRepository, times(1)).findByEmail("cgaucho@ucsb.edu");
+
+                Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext()
+                                .getAuthentication().getAuthorities();
+
+                boolean role_admin = authorities.stream()
+                                .anyMatch(grantedAuth -> grantedAuth.getAuthority().equals("ROLE_ADMIN"));
+                boolean role_driver = authorities.stream()
+                                .anyMatch(grantedAuth -> grantedAuth.getAuthority().equals("ROLE_DRIVER"));
+                boolean role_member = authorities.stream()
+                                .anyMatch(grantedAuth -> grantedAuth.getAuthority().equals("ROLE_MEMBER"));
+                boolean role_rider = authorities.stream()
+                        .anyMatch(grantedAuth -> grantedAuth.getAuthority().equals("ROLE_RIDER"));
+
+                assertTrue(role_admin, "ROLE_ADMIN should not be in roles list");
+                assertFalse(role_driver, "ROLE_DRIVER should be in roles list");
+                assertTrue(role_member, "ROLE_MEMBER should be in roles list");
+                assertFalse(role_rider, "ROLE_RIDER should be in roles list");
         }
 }
