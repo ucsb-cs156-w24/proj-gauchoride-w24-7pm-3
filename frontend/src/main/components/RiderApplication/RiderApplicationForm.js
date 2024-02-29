@@ -4,6 +4,14 @@ import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * 
+ * @param {initialContents} initialContents - prepopulates the form with values 
+ * @param {submitAction} submitAction - form will go into show mode if submitAction field is **null** (all fields are uneditable)
+ * @param {buttonLabel} buttonLabel - label of submit button
+ * @param {email} email - user email should be auto populated
+ * @returns 
+ */
 function RiderApplicationForm({ initialContents, submitAction, buttonLabel = "Apply", email }) {
     const navigate = useNavigate();
 
