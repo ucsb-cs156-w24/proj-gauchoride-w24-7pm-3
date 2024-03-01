@@ -240,7 +240,7 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         // arrange
         DriverAvailability availability = new DriverAvailability();
         availability.setId(0L); // Assuming the ID is set after save operation
-        availability.setDriverId(11L);
+        availability.setDriverId(currentUserService.getCurrentUser().getUser().getId());
         availability.setDay("Monday");
         availability.setStartTime("9:00AM");
         availability.setEndTime("5:00PM");
@@ -270,6 +270,5 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }
-
 }
 
