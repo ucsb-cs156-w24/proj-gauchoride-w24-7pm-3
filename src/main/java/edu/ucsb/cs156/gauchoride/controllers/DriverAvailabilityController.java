@@ -53,4 +53,40 @@ public class DriverAvailabilityController extends ApiController {
                 .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));;
         return driverAvailability;
     }
+
+    @Operation(summary = "Create a new Driver Availability")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @PostMapping("/post")
+    public DriverAvailability postDriverAvailability(
+        // @Parameter(name="driverId", description="Long, driver id")
+        // @RequestParam long driverId,
+
+        @Parameter(name="day", description="String, Day of the week ride is requested (Monday - Sunday) and allows Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday", 
+                    example="Tuesday", required = true) 
+        @RequestParam String day,
+
+        @Parameter(name="startTime", description="String, Time the ride starts HH:MM(A/P)M", example="12:30AM", required = true)
+        @RequestParam String startTime,
+
+        @Parameter(name="endTime", description="String, Time the ride ends HH:MM(A/P)M", example="12:30AM", required = true)
+        @RequestParam String endTime,
+
+        @Parameter(name="notes", description="String, Extra information", example="We have two people riding", required = true)
+        @RequestParam String notes
+        )
+        {
+
+        DriverAvailability driverAvailability = new DriverAvailability();
+        
+        driverAvailability.setDriverId(getCurrentUser().getUser().getId());
+        driverAvailability.setDay(day);
+        driverAvailability.setStartTime(startTime);
+        driverAvailability.setEndTime(endTime);
+        driverAvailability.setNotes(notes);
+
+        DriverAvailability savedDriverAvailability = driverAvailabilityRepository.save(driverAvailability);
+
+        return savedDriverAvailability;
+    }
+
 }

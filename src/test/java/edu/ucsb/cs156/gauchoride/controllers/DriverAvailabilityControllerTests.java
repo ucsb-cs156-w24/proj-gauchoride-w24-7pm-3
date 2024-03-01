@@ -125,4 +125,53 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         mockMvc.perform(get("/api/driverAvailability/admin?id=1")) 
                 .andExpect(status().isNotFound()).andReturn();
     }
+
+    @Test
+    public void logged_out_users_cannot_create_new() throws Exception {
+            mockMvc.perform(post("/api/driverAvailability/post"))
+                            .andExpect(status().is(403)); // logged out users can't get all
+    }
+
+    @WithMockUser(roles = { "USER", "ADMIN", "DRIVER" })
+    @Test
+    public void logged_in_drivers_cant_post() throws Exception {
+            mockMvc.perform(post("/api/driverAvailability/post"))
+                            .andExpect(status().is(403)); // logged
+    }
+
+    @WithMockUser(roles = { "DRIVER" })
+    @Test
+    public void a_driver_user_can_post_a_new_driver_availability() throws Exception {
+        // arrange
+        DriverAvailability availability = new DriverAvailability();
+        availability.setId(0L); // Assuming the ID is set after save operation
+        availability.setDriverId(currentUserService.getCurrentUser().getUser().getId());
+        availability.setDay("Monday");
+        availability.setStartTime("9:00AM");
+        availability.setEndTime("5:00PM");
+        availability.setNotes("haha");
+
+        when(driverAvailabilityRepository.save(availability)).thenReturn(availability);
+
+        // // act
+        // MvcResult response = mockMvc.perform(
+        //                 post("/api/driverAvailability/post")
+        //                 .param("driverId", "1")
+        //                 .param("day", "Monday")
+        //                 .param("startTime", "9:00AM")
+        //                 .param("endTime", "5:00PM")
+        //                 .param("notes", "haha")
+        //                 .with(csrf()))
+        //         .andExpect(status().isOk()).andReturn();
+        MvcResult response = mockMvc.perform(
+                                post("/api/driverAvailability/post?day=Monday&startTime=9:00AM&endTime=5:00PM&notes=haha")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(driverAvailabilityRepository, times(1)).save(availability);
+        String expectedJson = mapper.writeValueAsString(availability);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedJson, responseString);
+    }
 }
