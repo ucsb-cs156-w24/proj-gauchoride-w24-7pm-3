@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "Enter Info"}) {
     const navigate = useNavigate();
-    
-    // Stryker disable next-line Regex
-    const day_regex = /((Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday))$/i;
+
     // Stryker disable next-line Regex
     const time_regex = /^(0?[1-9]|11|12):([0-5][0-9])(A|P)M$/i;
 
