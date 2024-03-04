@@ -1,6 +1,5 @@
 const riderApplicationFixtures = {
     oneRiderApplication:
-    [
       {
        "id": 1,
         "status": "deny",
@@ -10,8 +9,7 @@ const riderApplicationFixtures = {
         "cancelled_date": "2023-07-25T05:22:22",
         "description": "I have broken leg",
         "notes": "no notes"    
-      }
-    ],
+      },
     threeRiderApplications:
     [
         {
