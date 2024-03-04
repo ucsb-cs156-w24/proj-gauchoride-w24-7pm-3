@@ -1,7 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import RiderApplicationEditPageMember from "main/pages/RiderApplication/RiderApplicationEditPageMember";
+import RiderApplicationShowPage from "main/pages/RiderApplication/RiderApplicationShowPage";
 
 import { apiCurrentUserFixtures} from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
@@ -55,15 +55,16 @@ describe("RiderApplicationEditPage tests", () => {
             const {queryByTestId, findByText} = render(
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
-                        <RiderApplicationEditPageMember />
+                        <RiderApplicationShowPage />
                     </MemoryRouter>
                 </QueryClientProvider>
             );
-            await findByText("Edit Rider Application");
+            await findByText("Rider Application");
             expect(queryByTestId("RiderApplicationForm-id")).not.toBeInTheDocument();
             restoreConsole();
         });
     });
+    
 
     describe("tests where backend is working normally", () => {
 
@@ -81,9 +82,9 @@ describe("RiderApplicationEditPage tests", () => {
                 email: "random@example.org",
                 created_date: "2023-04-17",
                 updated_date: "2023-04-17",
-                cancelled_date: "",
+                cancelled_date: "2023-04-17",
                 description: "",
-                notes: ""
+                notes: "you will not be approved"
             });
             axiosMock.onPut('/api/riderApplication').reply(200, {
                 id: 17,
@@ -92,9 +93,9 @@ describe("RiderApplicationEditPage tests", () => {
                 email: "random@example.org",
                 created_date: "2023-04-17",
                 updated_date: "2023-08-25",
-                cancelled_date: "",
+                cancelled_date: "2023-04-17",
                 description: "My leg is broken",
-                notes: ""
+                notes: "you will not be approved"
             });
         });
 
@@ -103,7 +104,7 @@ describe("RiderApplicationEditPage tests", () => {
             render(
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
-                        <RiderApplicationEditPageMember />
+                        <RiderApplicationShowPage />
                     </MemoryRouter>
                 </QueryClientProvider>
             );
@@ -114,7 +115,7 @@ describe("RiderApplicationEditPage tests", () => {
             const { getByTestId, findByTestId } = render(
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
-                        <RiderApplicationEditPageMember />
+                        <RiderApplicationShowPage />
                     </MemoryRouter>
                 </QueryClientProvider>
             );
@@ -128,73 +129,26 @@ describe("RiderApplicationEditPage tests", () => {
             const updatedDateField =getByTestId("RiderApplicationForm-updated_date");
             const cancelledDateField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
             const descriptionField = getByTestId("RiderApplicationForm-description");
-            const notesField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
+            const notesField = screen.queryByTestId("RiderApplicationForm-notes");
 
             expect(statusField).toHaveValue("pending");
             expect(permNumberField).toHaveValue("1234567");
             expect(emailField).toHaveValue("random@example.org");
             expect(createdDateField).toHaveValue("2023-04-17");
             expect(updatedDateField).toHaveValue("2023-04-17");
-            expect(cancelledDateField).not.toBeInTheDocument()
+            expect(cancelledDateField).toHaveValue("2023-04-17")
             expect(descriptionField).toHaveValue("");
-            expect(notesField).not.toBeInTheDocument();
+            expect(notesField).toHaveValue("you will not be approved");
+
+            expect(statusField).toBeDisabled();
+            expect(permNumberField).toBeDisabled();
+            expect(emailField).toBeDisabled();
+            expect(createdDateField).toBeDisabled();
+            expect(updatedDateField).toBeDisabled();
+            expect(cancelledDateField).toBeDisabled();
+            expect(descriptionField).toBeDisabled();
+            expect(notesField).toBeDisabled();
             
         });
-
-        test("Changes when you click Update", async () => {
-
-                
-
-            const { getByTestId, findByTestId } = render(
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter>
-                        <RiderApplicationEditPageMember />
-                    </MemoryRouter>
-                </QueryClientProvider>
-            );
-
-            await findByTestId("RiderApplicationForm-id");
-
-            const statusField =getByTestId("RiderApplicationForm-status");
-            const permNumberField = getByTestId("RiderApplicationForm-perm_number");
-            const emailField =getByTestId("RiderApplicationForm-email");
-            const createdDateField =getByTestId("RiderApplicationForm-created_date");
-            const updatedDateField =getByTestId("RiderApplicationForm-updated_date");
-            const cancelledDateField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
-            const descriptionField = getByTestId("RiderApplicationForm-description");
-            const notesField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
-            const submitButton = getByTestId("RiderApplicationForm-submit")
-
-            expect(statusField).toHaveValue("pending");
-            expect(permNumberField).toHaveValue("1234567");
-            expect(emailField).toHaveValue("random@example.org");
-            expect(createdDateField).toHaveValue("2023-04-17");
-            expect(updatedDateField).toHaveValue("2023-04-17");
-            expect(cancelledDateField).not.toBeInTheDocument();
-            expect(descriptionField).toHaveValue("");
-            expect(notesField).not.toBeInTheDocument();
-
-            expect(submitButton).toBeInTheDocument();
-
-            fireEvent.change(permNumberField, { target: { value: "7654321" } });
-            fireEvent.change(descriptionField, { target: { value: "I broke my leg." } });
-
-            fireEvent.click(submitButton);
-
-    
-            await waitFor(() => expect(mockToast).toHaveBeenCalled());
-            expect(mockToast).toBeCalledWith("Application Updated - id: 17");
-            expect(mockNavigate).toBeCalledWith({ "to": "/apply/rider" });
-
-            expect(axiosMock.history.put.length).toBe(1); // times called
-            expect(axiosMock.history.put[0].params).toEqual({ id: 17 });
-            expect(axiosMock.history.put[0].data).toBe(JSON.stringify({
-                perm_number: "7654321",
-                description: "I broke my leg.",
-            })); // posted object
-
-        });
-
-       
     });
 });
