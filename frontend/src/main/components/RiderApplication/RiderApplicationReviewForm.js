@@ -191,7 +191,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, email}) {
                         <>
                             <Button
                                 type="submit"
-                                onClick={() => setValue("status", "approve")}
+                                onClick={() => setValue("status", "accepted")}
                                 data-testid={testIdPrefix + "-approve"}
                                 className="btn btn-success m-1"
                             >
@@ -200,7 +200,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, email}) {
 
                             <Button
                                 type="submit"
-                                onClick={() => setValue("status", "deny")}
+                                onClick={() => setValue("status", "declined")}
                                 data-testid={testIdPrefix + "-deny"}
                                 className="btn btn-danger m-1"
                             >
