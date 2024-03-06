@@ -187,7 +187,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, email}) {
 
             {submitAction && (
                 <>
-                    {initialContents?.status == "pending" && (
+                    {initialContents?.status === "pending" && (
                         <>
                             <Button
                                 type="submit"
@@ -217,7 +217,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, email}) {
                             </Button>
                         </>
                     )}
-                    {initialContents?.status == "accepted" && (
+                    {initialContents?.status === "accepted" && (
                         <>
                             <Button
                                 type="submit"
