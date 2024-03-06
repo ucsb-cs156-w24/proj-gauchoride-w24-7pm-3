@@ -1,11 +1,14 @@
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import { useParams } from "react-router-dom";
-import RiderApplicationForm from "main/components/RiderApplication/RiderApplicationForm";
-import { useBackend } from "main/utils/useBackend";
+import RiderApplicationReviewForm from "main/components/RiderApplication/RiderApplicationReviewForm";
+import { useBackend, useBackendMutation } from "main/utils/useBackend";
 import { useCurrentUser } from "main/utils/currentUser";
+import { Navigate } from 'react-router-dom'
+
+import { toast } from "react-toastify";
 
 
-export default function AdminRiderApplicationReviewPage() {
+export default function AdminRiderApplicationReviewPage(storybook=false) {
   let { id } = useParams();
   const { data: currentUser } = useCurrentUser();
 
@@ -23,13 +26,44 @@ export default function AdminRiderApplicationReviewPage() {
         }
       }
     );
+    const objectToAxiosPutParams = (riderApplication) => ({
+      url: "/api/rider/admin",
+      method: "PUT",
+      params: {
+        id: riderApplication.id,
+        status: riderApplication.status,
+        notes: riderApplication.notes
+      },
+      data: {}
+    });
+  
+    const onSuccess = (riderApplication) => {
+      toast(`Application Updated - id: ${riderApplication.id}`);
+    }
+  
+    const mutation = useBackendMutation(
+      objectToAxiosPutParams,
+      { onSuccess },
+      // Stryker disable next-line all : hard to set up test for caching
+      [`/api/rider/admin?id=${id}`]
+    );
+  
+    const { isSuccess } = mutation
+  
+    const onSubmit = async (data) => {
+      mutation.mutate(data);
+    }
+  
+    if (isSuccess && !storybook) {
+      return <Navigate to="/admin/applications/riders" />
+    }
 
     return (
         <BasicLayout>
             <div className="pt-2">
                 <h1>Review Rider Application</h1>
                 {riderApplication &&
-                <RiderApplicationForm initialContents={riderApplication} buttemail={email}/>
+                <RiderApplicationReviewForm initialContents={riderApplication} submitAction={onSubmit} email={email}/>
                 }
             </div>
         </BasicLayout>
