@@ -207,11 +207,33 @@ function RiderApplicationReviewForm({ initialContents, submitAction, buttonLabel
                             </Button>
 
                             <Button
-                                type="submit"
-                                data-testid={testIdPrefix + "-save"}
+                                type="button"
+                                data-testid={testIdPrefix + "-return-without-save"}
                                 className="btn m-1"
+                                onClick={() => {navigate(-1)}}
                             >
-                                Save
+                                Return without Saving
+                            </Button>
+                        </>
+                    )}
+                    {initialContents?.status == "accepted" && (
+                        <>
+                            <Button
+                                type="submit"
+                                onClick={() => setValue("status", "expired")}
+                                data-testid={testIdPrefix + "-approve"}
+                                className="btn btn-success m-1"
+                            >
+                                Set Status to Expired
+                            </Button>
+
+                            <Button
+                                type="submit"
+                                data-testid={testIdPrefix + "-return-without-save"}
+                                className="btn m-1"
+                                onClick={() => {navigate(-1)}}
+                            >
+                                Return without Saving
                             </Button>
                         </>
                     )}

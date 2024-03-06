@@ -34,8 +34,8 @@ Default.args = {
 };
 
 
-export const EditAdminUser = Template.bind({});
-EditAdminUser.parameters = {
+export const ReviewRiderApp = Template.bind({});
+ReviewRiderApp.parameters = {
     msw: [
         rest.get('/api/currentUser', (_req, res, ctx) => {
             return res(ctx.json(apiCurrentUserFixtures.adminOnly));
@@ -47,9 +47,34 @@ EditAdminUser.parameters = {
 };
 const newRiderApp = riderApplicationFixtures.oneRiderApplication; 
 newRiderApp.status = "pending";
-
-EditAdminUser.args = {
+newRiderApp.perm_number = "1234567"
+ReviewRiderApp.args = {
     initialContents: newRiderApp,
+    submitText: "Update",
+    email: "capperson@ucsb.edu",
+    submitAction: (data) => {
+        console.log("Submit was clicked with data: ", data);
+        window.alert("Submit was clicked with data: " + JSON.stringify(data));
+    }
+};
+
+export const ExpireRiderApp = Template.bind({});
+ExpireRiderApp.parameters = {
+    msw: [
+        rest.get('/api/currentUser', (_req, res, ctx) => {
+            return res(ctx.json(apiCurrentUserFixtures.adminOnly));
+        }),
+        rest.get('/api/systemInfo', (_req, res, ctx) => {
+            return res(ctx.json(systemInfoFixtures.showingNeither));
+        }),
+    ]
+};
+const approvedRiderApp = riderApplicationFixtures.oneRiderApplication; 
+approvedRiderApp.status = "accepted";
+approvedRiderApp.perm_number = "1234567"
+
+ExpireRiderApp.args = {
+    initialContents: approvedRiderApp,
     submitText: "Update",
     email: "capperson@ucsb.edu",
     submitAction: (data) => {
