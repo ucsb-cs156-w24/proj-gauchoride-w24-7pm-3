@@ -9,9 +9,10 @@ import { useNavigate } from 'react-router-dom';
  * @param {initialContents} initialContents - prepopulates the form with values 
  * @param {submitAction} submitAction - form will go into show mode if submitAction field is **null** (all fields are uneditable)
  * @param {buttonLabel} buttonLabel - label of submit button
+ * @param {email} email - email of user who owns application
  * @returns 
  */
-function RiderApplicationReviewForm({ initialContents, submitAction, buttonLabel = "Save", email}) {
+function RiderApplicationReviewForm({ initialContents, submitAction, email}) {
     const navigate = useNavigate();
 
     // Stryker disable all
@@ -25,7 +26,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, buttonLabel
     );
     // Stryker enable all
 
-    const testIdPrefix = "RiderApplicationForm";
+    const testIdPrefix = "RiderApplicationReviewForm";
 
     const { data: currentUser } = useCurrentUser();
     const [isAdmin, setAdmin] = useState(false);
@@ -221,7 +222,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, buttonLabel
                             <Button
                                 type="submit"
                                 onClick={() => setValue("status", "expired")}
-                                data-testid={testIdPrefix + "-approve"}
+                                data-testid={testIdPrefix + "-set-expired"}
                                 className="btn btn-success m-1"
                             >
                                 Set Status to Expired

@@ -45,7 +45,7 @@ ReviewRiderApp.parameters = {
         }),
     ]
 };
-const newRiderApp = riderApplicationFixtures.oneRiderApplication; 
+const newRiderApp = {...riderApplicationFixtures.oneRiderApplication}; 
 newRiderApp.status = "pending";
 newRiderApp.perm_number = "1234567"
 ReviewRiderApp.args = {
@@ -69,7 +69,7 @@ ExpireRiderApp.parameters = {
         }),
     ]
 };
-const approvedRiderApp = riderApplicationFixtures.oneRiderApplication; 
+const approvedRiderApp = {...riderApplicationFixtures.oneRiderApplication}; 
 approvedRiderApp.status = "accepted";
 approvedRiderApp.perm_number = "1234567"
 
