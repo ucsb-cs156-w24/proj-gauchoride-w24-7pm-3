@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
 export default function DriverAvailabilityTable({
-    driverAvailabilities,
+    driverAvailability,
     currentUser,
     testIdPrefix = "DriverAvailabilityTable" }) {
 
@@ -67,7 +67,7 @@ export default function DriverAvailabilityTable({
     } 
 
     return <OurTable
-        data={driverAvailabilities}
+        data={driverAvailability}
         columns={columns}
         testid={testIdPrefix}
     />;

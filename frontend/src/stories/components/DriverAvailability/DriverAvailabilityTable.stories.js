@@ -17,12 +17,12 @@ const Template = (args) => {
 export const Empty = Template.bind({});
 
 Empty.args = {
-    driverAvailabilities: []
+    driverAvailability: []
 };
 
 export const DriverAvailabilityThreeSubjects = Template.bind({});
 
 DriverAvailabilityThreeSubjects.args = {
-    driverAvailabilities: driverAvailabilityFixtures.threeAvailabilities,
+    driverAvailability: driverAvailabilityFixtures.threeAvailabilities,
 };
 
