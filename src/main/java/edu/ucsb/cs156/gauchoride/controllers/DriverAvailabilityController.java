@@ -55,8 +55,8 @@ public class DriverAvailabilityController extends ApiController {
         return driverAvailability;
     }
 
-    @Operation(summary = "Update a driver Availability, if oned by Driver")
-    @PreAuthorize("hasRole('ROLE_DRIVER') || hasRole('ROLE_USER')")
+    @Operation(summary = "Update a driver Availability, only user's if not Driver/Admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_DRIVER') || hasRole('ROLE_USER')")
     @PutMapping("")
     public DriverAvailability updateDriverAvailability(
             @Parameter(name="id", description="long, Id of the DriverAvailability to be edited", 
@@ -66,7 +66,8 @@ public class DriverAvailabilityController extends ApiController {
 
         DriverAvailability driverAvailability;
 
-        if (getCurrentUser().getRoles().contains(new SimpleGrantedAuthority("ROLE_DRIVER"))) {
+        if (getCurrentUser().getRoles().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ||
+        getCurrentUser().getRoles().contains(new SimpleGrantedAuthority("ROLE_DRIVER"))) {
             driverAvailability = driverAvailabilityRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));}
         else{
