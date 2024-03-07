@@ -270,5 +270,39 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }
+
+    @Test
+    public void kappachungusfailshahahalol() throws Exception {
+            mockMvc.perform(get("/api/driverAvailability"))
+                            .andExpect(status().is(403)); // logged out users can't get all
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void hehehhahah() throws Exception {
+        // arrange
+        DriverAvailability availability1 = new DriverAvailability();
+        availability1.setId(1L);
+        availability1.setDriverId(currentUserService.getCurrentUser().getUser().getId());
+        availability1.setDay("Monday");
+        availability1.setStartTime("9:00AM");
+        availability1.setEndTime("5:00PM");
+        availability1.setNotes("Available all day");
+        
+        long xd = 1;
+        when(driverAvailabilityRepository.findAllByDriverId(currentUserService.getCurrentUser().getUser().getId())).thenReturn(List.of(availability1));
+
+
+        // act
+        MvcResult response = mockMvc.perform(get("/api/driverAvailability"))
+                        .andExpect(status().isOk()).andReturn();
+
+
+        // assert
+        // verify(driverAvailabilityRepository, times(1)).findById(currentUserService.getCurrentUser().getUser().getId());
+        String expectedJson = mapper.writeValueAsString(List.of(availability1));
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedJson, responseString);
+    }
 }
 
