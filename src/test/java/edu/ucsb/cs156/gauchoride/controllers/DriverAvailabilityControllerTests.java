@@ -4,6 +4,8 @@ import edu.ucsb.cs156.gauchoride.entities.DriverAvailability;
 import edu.ucsb.cs156.gauchoride.repositories.DriverAvailabilityRepository;
 import edu.ucsb.cs156.gauchoride.testconfig.TestConfig;
 import edu.ucsb.cs156.gauchoride.ControllerTestCase;
+import java.util.*;
+import java.lang.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,14 +26,12 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import edu.ucsb.cs156.gauchoride.repositories.UserRepository;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-
 @WebMvcTest(controllers = DriverAvailabilityController.class)
 @Import(TestConfig.class)
 public class DriverAvailabilityControllerTests extends ControllerTestCase {
 
     @MockBean
     private DriverAvailabilityRepository driverAvailabilityRepository;
-
 
     @MockBean
     private UserRepository UserRepository;
