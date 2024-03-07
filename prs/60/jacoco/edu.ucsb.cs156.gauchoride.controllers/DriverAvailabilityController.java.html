@@ -64,7 +64,7 @@ import javax.validation.Valid;
         DriverAvailability availability;
 
 <span class="fc" id="L66">        availability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())</span>
-<span class="pc" id="L67">            .orElseThrow(() -&gt; new EntityNotFoundException(DriverAvailability.class, id));</span>
+<span class="fc" id="L67">            .orElseThrow(() -&gt; new EntityNotFoundException(DriverAvailability.class, id));</span>
 <span class="fc" id="L68">        driverAvailabilityRepository.delete(availability);</span>
         
 <span class="fc" id="L70">        return genericMessage(&quot;DriverAvailability with id %s deleted&quot;.formatted(id));</span>
