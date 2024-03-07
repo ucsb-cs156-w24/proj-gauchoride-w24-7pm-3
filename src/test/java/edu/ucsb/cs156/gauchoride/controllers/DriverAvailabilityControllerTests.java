@@ -304,5 +304,46 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }
+        @Test
+    public void getByIdFails() throws Exception {
+            mockMvc.perform(get("/api/driverAvailability/id?id=177012"))
+                            .andExpect(status().is(403)); // logged out users can't get all
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void usergetbyidworks() throws Exception {
+        // arrange
+        DriverAvailability availability1 = new DriverAvailability();
+        availability1.setId(1L);
+        availability1.setDriverId(1L);
+        availability1.setDay("Monday");
+        availability1.setStartTime("9:00AM");
+        availability1.setEndTime("5:00PM");
+        availability1.setNotes("Available all day");
+        
+        long xd = 1;
+        when(driverAvailabilityRepository.findByIdAndDriverId(1L, currentUserService.getCurrentUser().getUser().getId())).thenReturn(Optional.of(availability1));
+
+        // act
+        MvcResult response = mockMvc.perform(get("/api/driverAvailability/id?id=1"))
+                        .andExpect(status().isOk()).andReturn();
+
+        // assert
+        // verify(driverAvailabilityRepository, times(1)).findByIdAndDriverId(1L, currentUserService.getCurrentUser().getUser().getId());
+        String expectedJson = mapper.writeValueAsString(availability1);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedJson, responseString);
+    }
+
+    @Test
+    @WithMockUser(roles = "USER") // Mock an admin user
+    public void holymolyomah    () throws Exception {
+        // Arrange: Mock the repository to return an empty Optional when findById is called
+        when(driverAvailabilityRepository.findByIdAndDriverId(anyLong(), anyLong())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/driverAvailability/id?id=1")) 
+                .andExpect(status().isNotFound()).andReturn();
+    }
 }
 

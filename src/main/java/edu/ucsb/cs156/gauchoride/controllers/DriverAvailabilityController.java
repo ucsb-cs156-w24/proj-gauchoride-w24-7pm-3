@@ -110,5 +110,18 @@ public class DriverAvailabilityController extends ApiController {
         return availabilities;
     }
 
+    @Operation(summary = "Get a single availability by id, if user owns it")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/id")
+    public DriverAvailability getById(
+            @Parameter(name="id", description = "long, Id of the DriverAvailability to get", 
+            required = true)  
+            @RequestParam Long id) {
+        DriverAvailability driverAvailability;
+        driverAvailability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())
+                .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));;
+        return driverAvailability;
+    }
+
 }
 
