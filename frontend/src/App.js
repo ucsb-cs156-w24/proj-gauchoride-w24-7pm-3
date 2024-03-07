@@ -15,6 +15,10 @@ import ShiftCreatePage from "main/pages/Shift/ShiftCreatePage";
 import ShiftEditPage from "main/pages/Shift/ShiftEditPage";
 import ShiftIndexPage from "main/pages/Shift/ShiftIndexPage";
 
+import DriverAvailabilityCreatePage from "main/pages/DriverAvailability/DriverAvailabilityCreatePage";
+import DriverAvailabilityEditPage from "main/pages/DriverAvailability/DriverAvailabilityEditPage";
+import DriverAvailabilityIndexPage from "main/pages/DriverAvailability/DriverAvailabilityIndexPage";
+
 import DriverPage from "main/pages/DriverPage";
 import DriverDashboardPage from "main/pages/Drivers/DriverDashboardPage";
 import DriverInfoPage from "main/pages/DriverInfoPage";
@@ -85,6 +89,7 @@ function App() {
         {
           (hasRole(currentUser, "ROLE_DRIVER") ) && <Route exact path="/drivershifts" element={<DriverDashboardPage />} />
         }
+        {
           (hasRole(currentUser, "ROLE_MEMBER")) && <Route exact path="/apply/rider" element={<RiderApplicationIndexPageMember />} />
         }
         {
@@ -102,6 +107,19 @@ function App() {
         {
           (hasRole(currentUser, "ROLE_MEMBER")) && <Route exact path="/apply/rider/edit/:id" element={<RiderApplicationEditPageMember />} />
         }
+        {
+          (hasRole(currentUser, "ROLE_ADMIN")) && <Route exact path="/admin/driverAvailability/" element={<DriverAvailabilityCreatePage />} />
+        }
+        {
+          (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_DRIVER") || hasRole(currentUser, "ROLE_RIDER")) && <Route exact path="/driverAvailability/" element={<DriverAvailabilityIndexPage />} />
+        }
+        {
+          (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_DRIVER")) && <Route exact path="/driverAvailability/create" element={<DriverAvailabilityCreatePage />} />
+        }
+        {
+          (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_DRIVER")) && <Route exact path="/driverAvailability/edit/:id" element={<DriverAvailabilityEditPage />} />
+        }
+        
         <Route exact path="/privacy.html" />
         <Route exact path="/*" element={<PageNotFound />} />
 
