@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for pages/Ride/RideRequestEditPage.js</title>
+    <title>Code coverage report for pages/DriverAvailability/DriverAvailabilityEditPage.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">pages/Ride</a> RideRequestEditPage.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">pages/DriverAvailability</a> DriverAvailabilityEditPage.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -134,11 +134,7 @@
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,10 +160,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -215,7 +207,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import { useParams } from "react-router-dom";
-import RideForm from "main/components/Ride/RideForm";
+import DriverAvailabilityForm from "main/components/DriverAvailability/DriverAvailabilityForm";
 import { Navigate } from 'react-router-dom'
 import { useBackend, useBackendMutation } from "main/utils/useBackend";
 &nbsp;
@@ -224,13 +216,13 @@ import { toast } from "react-toastify";
 export default function RideRequestEditPage() {
   let { id } = useParams();
 &nbsp;
-  const { data: ride, _error, _status } =
+  const { data: driverAvailability, _error, _status } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
-      [`/api/ride_request?id=${id}`],
+      [`/api/driverAvailability?id=${id}`],
       {  // Stryker disable next-line all : GET is the default, so changing this to "" doesn't introduce a bug
         method: "GET",
-        url: `/api/ride_request`,
+        url: `/api/driverAvailability`,
         params: {
           id
         }
@@ -238,34 +230,30 @@ export default function RideRequestEditPage() {
     );
 &nbsp;
 &nbsp;
-  const objectToAxiosPutParams = (ride) =&gt; ({
-    url: "/api/ride_request",
+  const objectToAxiosPutParams = (driverAvailability) =&gt; ({
+    url: "/api/driverAvailability",
     method: "PUT",
     params: {
-      id: ride.id,
+      id: driverAvailability.id,
     },
     data: {
-        day: ride.day,
-        startTime: ride.start,
-        endTime: ride.end, 
-        pickupBuilding: ride.pickupBuilding,
-        dropoffBuilding: ride.dropoffBuilding,
-        dropoffRoom: ride.dropoffRoom,
-        pickupRoom: ride.pickupRoom,
-        course: ride.course,
-        notes: ride.notes
+        driverId: driverAvailability.driverId,
+        day: driverAvailability.day,
+        startTime: driverAvailability.startTime,
+        endTime: driverAvailability.endTime,
+        notes: driverAvailability.notes
     }
   });
 &nbsp;
-  const onSuccess = (ride) =&gt; {
-    toast(`Ride Updated - id: ${ride.id}`);
+  const onSuccess = (driverAvailability) =&gt; {
+    toast(`Driver Availability Updated - id: ${driverAvailability.id}`);
   }
 &nbsp;
   const mutation = useBackendMutation(
     objectToAxiosPutParams,
     { onSuccess },
     // Stryker disable next-line all : hard to set up test for caching
-    [`/api/ride_request?id=${id}`]
+    [`/api/driverAvailability?id=${id}`]
   );
 &nbsp;
   const { isSuccess } = mutation
@@ -275,15 +263,15 @@ export default function RideRequestEditPage() {
   }
 &nbsp;
   if (isSuccess) {
-    return &lt;Navigate to="/ride/" /&gt;
+    return &lt;Navigate to="/driverAvailability/" /&gt;
   }
 &nbsp;
     return (
         &lt;BasicLayout&gt;
             &lt;div className="pt-2"&gt;
-                &lt;h1&gt;Edit Ride Request&lt;/h1&gt;
-                {ride &amp;&amp;
-                &lt;RideForm initialContents={ride} submitAction={onSubmit} buttonLabel="Update" /&gt;
+                &lt;h1&gt;Edit Driver Availability&lt;/h1&gt;
+                {driverAvailability &amp;&amp;
+                &lt;DriverAvailabilityForm initialContents={driverAvailability} submitAction={onSubmit} buttonLabel="Update" /&gt;
                 }
             &lt;/div&gt;
         &lt;/BasicLayout&gt;

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/Shift/ShiftForm.js</title>
+    <title>Code coverage report for components/DriverAvailability/DriverAvailabilityForm.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Shift</a> ShiftForm.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/DriverAvailability</a> DriverAvailabilityForm.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -218,31 +218,32 @@
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
 <a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">70x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">70x</span>
-<span class="cline-any cline-yes">70x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -373,140 +374,140 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Button, Form } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react'
+import { Button, Form } from 'react-bootstrap';
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
 &nbsp;
-function ShiftForm({ initialContents, submitAction, buttonLabel = "Create" }) {
+function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "Enter Info"}) {
+    const navigate = useNavigate();
+&nbsp;
+    // Stryker disable next-line Regex
+    const time_regex = /^(0?[1-9]|11|12):([0-5][0-9])(A|P)M$/i;
+&nbsp;
     // Stryker disable all
     const {
         register,
-        formState: { errors },
+        formState: {errors},
         handleSubmit,
-    } = useForm({ defaultValues: initialContents || {} });
-    // Stryker restore all
-    const navigate = useNavigate();
-    const testIdPrefix = "ShiftForm";
+    } = useForm(
+        { defaultValues: initialContents }
+    );
+    // Stryker enable all
+   
+    const testIdPrefix = "DriverAvailabilityForm";
+&nbsp;
 &nbsp;
     return (
+&nbsp;
         &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
-            
+&nbsp;
             {initialContents &amp;&amp; (
-                &lt;Form.Group className="mb-3"&gt;
-                    &lt;Form.Label htmlFor="id"&gt;Id&lt;/Form.Label&gt;
+                &lt;Form.Group className="mb-3" &gt;
+                    &lt;Form.Label htmlFor="id"&gt;Application Id&lt;/Form.Label&gt;
                     &lt;Form.Control
                         data-testid={testIdPrefix + "-id"}
                         id="id"
-                        name="id"
                         type="text"
                         {...register("id")}
-                        value={initialContents.id}
+                        defaultValue={initialContents?.id}
                         disabled
                     /&gt;
                 &lt;/Form.Group&gt;
             )}
 &nbsp;
-            &lt;Form.Group className="mb-3"&gt;
+            &lt;Form.Group className="mb-3" &gt;
+                &lt;Form.Label htmlFor="driverId"&gt;Driver Id&lt;/Form.Label&gt;
+                &lt;Form.Control
+                    data-testid={testIdPrefix + "-driverId"}
+                    id="driverId"
+                    type="text"
+                    {...register("driverId")}
+                    defaultValue={initialContents?.driverId}
+                    disabled
+                /&gt;
+            &lt;/Form.Group&gt;
+&nbsp;
+            &lt;Form.Group className="mb-3" &gt;
                 &lt;Form.Label htmlFor="day"&gt;Day of the Week&lt;/Form.Label&gt;
-                &lt;Form.Control 
-                    as="select"
+                &lt;Form.Select
                     data-testid={testIdPrefix + "-day"}
                     id="day"
-                    name="day"
                     isInvalid={Boolean(errors.day)}
-                    {...register("day", {
-                        required: "Day is required."
+                    {...register("day",{
+                        required: "Day of the Week is required.",
                     })}
+                    
                 &gt;
-                    &lt;option value=""&gt;Select a day&lt;/option&gt;
-                    &lt;option value="Monday"&gt;Monday&lt;/option&gt;
-                    &lt;option value="Tuesday"&gt;Tuesday&lt;/option&gt;
-                    &lt;option value="Wednesday"&gt;Wednesday&lt;/option&gt;
-                    &lt;option value="Thursday"&gt;Thursday&lt;/option&gt;
-                    &lt;option value="Friday"&gt;Friday&lt;/option&gt;
-                    &lt;option value="Saturday"&gt;Saturday&lt;/option&gt;
-                    &lt;option value="Sunday"&gt;Sunday&lt;/option&gt;
-                &lt;/Form.Control&gt;
+                &lt;option value=""&gt;Select a Day&lt;/option&gt;
+                &lt;option value="Monday"&gt;Monday&lt;/option&gt;
+                &lt;option value="Tuesday"&gt;Tuesday&lt;/option&gt;
+                &lt;option value="Wednesday"&gt;Wednesday&lt;/option&gt;
+                &lt;option value="Thursday"&gt;Thursday&lt;/option&gt;
+                &lt;option value="Friday"&gt;Friday&lt;/option&gt;
+                &lt;option value="Saturday"&gt;Saturday&lt;/option&gt;
+                &lt;option value="Sunday"&gt;Sunday&lt;/option&gt;
+                &lt;/Form.Select&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
                     {errors.day?.message}
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Form.Group className="mb-3"&gt;
-                &lt;Form.Label htmlFor="shiftStart"&gt;Shift Start&lt;/Form.Label&gt;
+            &lt;Form.Group className="mb-3" &gt;
+                &lt;Form.Label htmlFor="startTime"&gt;Start Time&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-shiftStart"}
-                    id="shiftStart"
-                    name="shiftStart"
+                    data-testid={testIdPrefix + "-startTime"}
+                    id="startTime"
                     type="text"
-                    placeholder="HH:MMAM/PM e.g. 11:00AM"
-                    isInvalid={Boolean(errors.shiftStart)}
-                    {...register("shiftStart", {
-                        required: "Shift start time is required.",
-                        pattern: {
-                            value: /^(0[0-9]|1[0-2]):[0-5][0-9](AM|PM)$/,
-                            message: "Invalid time format."
-                        }
+                    isInvalid={Boolean(errors.startTime)}
+                    {...register("startTime",{
+                        required: true,
+                        pattern: time_regex
                     })}
+                    placeholder = "Please enter time in the format HH:MM AM/PM (e.g., 1:37AM)."
+                    defaultValue={initialContents?.startTime}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.shiftStart?.message}
+                    {errors.startTime?.type === 'required' &amp;&amp; 'Start Time is required.'}
+                    {errors.startTime?.type === 'pattern' &amp;&amp; 'Enter a day in the form of HH:MM(A/P)M (Ex. 1:37AM).'}
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Form.Group className="mb-3"&gt;
-                &lt;Form.Label htmlFor="shiftEnd"&gt;Shift End&lt;/Form.Label&gt;
+            &lt;Form.Group className="mb-3" &gt;
+                &lt;Form.Label htmlFor="endTime"&gt;End Time&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-shiftEnd"}
-                    id="shiftEnd"
-                    name="shiftEnd"
+                    data-testid={testIdPrefix + "-endTime"}
+                    id="endTime"
                     type="text"
-                    placeholder="HH:MMAM/PM e.g. 01:37PM"
-                    isInvalid={Boolean(errors.shiftEnd)}
-                    {...register("shiftEnd", {
-                        required: "Shift end time is required.",
-                        pattern: {
-                            value: /^(0[0-9]|1[0-2]):[0-5][0-9](AM|PM)$/,
-                            message: "Invalid time format."
-                        }
+                    isInvalid={Boolean(errors.endTime)}
+                    {...register("endTime",{
+                        required: true,
+                        pattern: time_regex,
                     })}
+                    placeholder = "Please enter time in the format HH:MM AM/PM (e.g., 1:37AM)."
+                    defaultValue={initialContents?.endTime}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.shiftEnd?.message}
+                    {errors.endTime?.type === 'required' &amp;&amp; 'End Time is required.'}
+                    {errors.endTime?.type === 'pattern' &amp;&amp; 'Enter a day in the form of HH:MM(A/P)M (Ex. 1:37AM).'}
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Form.Group className="mb-3"&gt;
-                &lt;Form.Label htmlFor="driverID"&gt;Driver ID&lt;/Form.Label&gt;
+            &lt;Form.Group className="mb-3" &gt;
+                &lt;Form.Label htmlFor="notes"&gt;Notes&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-driverID"}
-                    id="driverID"
-                    name="driverID"
-                    type="number"
-                    isInvalid={Boolean(errors.driverID)}
-                    {...register("driverID", {
-                        required: "Driver ID is required."
+                    data-testid={testIdPrefix + "-notes"}
+                    id="notes"
+                    type="text"
+                    isInvalid={Boolean(errors.notes)}
+                    {...register("notes",{
+                        required: "Notes are required."
                     })}
+                    defaultValue={initialContents?.notes}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.driverID?.message}
-                &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-&nbsp;
-            &lt;Form.Group className="mb-3"&gt;
-                &lt;Form.Label htmlFor="driverBackupID"&gt;Driver Backup ID&lt;/Form.Label&gt;
-                &lt;Form.Control
-                    data-testid={testIdPrefix + "-driverBackupID"}
-                    id="driverBackupID"
-                    name="driverBackupID"
-                    type="number"
-                    isInvalid={Boolean(errors.driverBackupID)}
-                    {...register("driverBackupID", {
-                        required: "Driver Backup ID is required."
-                    })}
-                /&gt;
-                &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.driverBackupID?.message}
+                    {errors.notes?.message}
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
@@ -516,6 +517,7 @@ function ShiftForm({ initialContents, submitAction, buttonLabel = "Create" }) {
             &gt;
                 {buttonLabel}
             &lt;/Button&gt;
+            
             &lt;Button
                 variant="Secondary"
                 onClick={() =&gt; navigate(-1)}
@@ -523,12 +525,13 @@ function ShiftForm({ initialContents, submitAction, buttonLabel = "Create" }) {
             &gt;
                 Cancel
             &lt;/Button&gt;
+&nbsp;
         &lt;/Form&gt;
-    );
+&nbsp;
+    )
 }
 &nbsp;
-export default ShiftForm;
-&nbsp;</pre></td></tr></table></pre>
+export default DriverAvailabilityForm;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
