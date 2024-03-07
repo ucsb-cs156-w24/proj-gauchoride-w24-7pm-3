@@ -28,10 +28,10 @@ describe("DriverAvailabilityIndexPage tests", () => {
 
     const testId = "DriverAvailabilityTable";
 
-    const setupUserOnly = () => {
+    const setupDriverOnly = () => {
         axiosMock.reset();
         axiosMock.resetHistory();
-        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
+        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.driverOnly);
         axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
     };
 
@@ -43,7 +43,7 @@ describe("DriverAvailabilityIndexPage tests", () => {
     };
 
     test("renders without crashing for regular user", () => {
-        setupUserOnly();
+        setupDriverOnly();
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/driverAvailability").reply(200, []);
 
@@ -65,7 +65,7 @@ describe("DriverAvailabilityIndexPage tests", () => {
     test("renders without crashing for admin user", () => {
         setupAdminUser();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/driverAvailability").reply(200, []);
+        axiosMock.onGet("/api/driverAvailability/admin/all").reply(200, []);
 
         render(
             <QueryClientProvider client={queryClient}>
@@ -118,7 +118,7 @@ describe("DriverAvailabilityIndexPage tests", () => {
     });
 
     test("renders empty table when backend unavailable, member only", async () => {
-        setupUserOnly();
+        setupDriverOnly();
 
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/driverAvailability").timeout();
