@@ -54,3 +54,4 @@ public class DriverAvailabilityController extends ApiController {
         return driverAvailability;
     }
 }
+
