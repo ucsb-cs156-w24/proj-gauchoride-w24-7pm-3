@@ -3,12 +3,12 @@ import OurTable, { ButtonColumn } from "main/components/OurTable";
 import { Link } from "react-router-dom";
 
 import { useBackendMutation } from "main/utils/useBackend";
-import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/shiftUtils"
+import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/driverAvailabilityUtils"
 import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
 export default function DriverAvailabilityTable({
-    driverAvailability,
+    driverAvailabilities,
     currentUser,
     testIdPrefix = "DriverAvailabilityTable" }) {
 
@@ -67,7 +67,7 @@ export default function DriverAvailabilityTable({
     } 
 
     return <OurTable
-        data={driverAvailability}
+        data={driverAvailabilities}
         columns={columns}
         testid={testIdPrefix}
     />;
