@@ -38,7 +38,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, email}) {
 
     return (
 
-        <Form onSubmit={handleSubmit(submitAction)}>
+        <Form data-testid={`${testIdPrefix + '-form'}`} onSubmit={handleSubmit(submitAction)}>
 
             {initialContents && (
                 <Form.Group className="mb-3" >
@@ -158,7 +158,7 @@ function RiderApplicationReviewForm({ initialContents, submitAction, email}) {
                     as="textarea"
                     isInvalid={Boolean(errors.description)}
                     {...register("description", {
-                        required: "Description is required."
+                        
                     })}
                     placeholder="e.g. My legs are broken."
                     defaultValue={initialContents?.description}

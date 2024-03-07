@@ -8,7 +8,7 @@ import { Navigate } from 'react-router-dom'
 import { toast } from "react-toastify";
 
 
-export default function AdminRiderApplicationReviewPage(storybook=false) {
+export default function AdminRiderApplicationReviewPage({storybook=false}) {
   let { id } = useParams();
   const { data: currentUser } = useCurrentUser();
 
@@ -26,6 +26,7 @@ export default function AdminRiderApplicationReviewPage(storybook=false) {
         }
       }
     );
+
     const objectToAxiosPutParams = (riderApplication) => ({
       url: "/api/rider/admin",
       method: "PUT",
@@ -34,7 +35,10 @@ export default function AdminRiderApplicationReviewPage(storybook=false) {
         status: riderApplication.status,
         notes: riderApplication.notes
       },
-      data: {}
+      data: { 
+        status: riderApplication.status,
+        notes: riderApplication.notes
+      }
     });
   
     const onSuccess = (riderApplication) => {
