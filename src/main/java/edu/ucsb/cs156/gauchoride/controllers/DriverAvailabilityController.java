@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.gauchoride.controllers;
 
 import edu.ucsb.cs156.gauchoride.entities.DriverAvailability;
+import edu.ucsb.cs156.gauchoride.entities.Ride;
 import edu.ucsb.cs156.gauchoride.errors.EntityNotFoundException;
 import edu.ucsb.cs156.gauchoride.repositories.DriverAvailabilityRepository;
 
@@ -51,6 +52,36 @@ public class DriverAvailabilityController extends ApiController {
         DriverAvailability driverAvailability;
         driverAvailability = driverAvailabilityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));;
+        return driverAvailability;
+    }
+
+    @Operation(summary = "Update a driver Availability, if oned by Driver")
+    @PreAuthorize("hasRole('ROLE_DRIVER') || hasRole('ROLE_USER')")
+    @PutMapping("")
+    public DriverAvailability updateDriverAvailability(
+            @Parameter(name="id", description="long, Id of the DriverAvailability to be edited", 
+            required = true)
+            @RequestParam Long id,
+            @RequestBody @Valid DriverAvailability incoming) {
+
+        DriverAvailability driverAvailability;
+
+        if (getCurrentUser().getRoles().contains(new SimpleGrantedAuthority("ROLE_DRIVER"))) {
+            driverAvailability = driverAvailabilityRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));}
+        else{
+            driverAvailability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())
+            .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));
+        }
+    
+    
+
+        driverAvailability.setDay(incoming.getDay());
+        driverAvailability.setStartTime(incoming.getStartTime());
+        driverAvailability.setEndTime(incoming.getEndTime());
+        driverAvailability.setNotes(incoming.getNotes());
+
+        driverAvailabilityRepository.save(driverAvailability);
         return driverAvailability;
     }
 }
