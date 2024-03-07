@@ -181,24 +181,44 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         assertEquals("DriverAvailability with id 12 deleted", json.get("message"));
     }
 
-    // @WithMockUser(roles = { "ADMIN", "USER" })
-    // @Test
-    // public void user_cannot_delete_availbility_not_owned()
-    //         throws Exception {
-    //     // arrange
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void user_cannot_delete_availbility_not_owned()
+            throws Exception {
+        // arrange
+        DriverAvailability driverAvailability = DriverAvailability.builder()
+                .id(12)
+                .driverId(13L)
+                .day("Monday")
+                .startTime("11:00AM")
+                .endTime("11:30AM")
+                .build();
 
-    //     when(driverAvailabilityRepository.findById(eq(457L))).thenReturn(Optional.empty());
+        User testUser = User.builder()
+                .id(11L)
+                .email("capo@gmail.com")
+                .admin(true)
+                .driver(true)
+                .build();
+        CurrentUser currentUser = CurrentUser.builder()
+                .user(testUser)
+                .build();
 
-    //     // act
-    //     MvcResult response = mockMvc.perform(
-    //             delete("/api/driverAvailability?id=457")
-    //                     .with(csrf()))
-    //             .andExpect(status().isNotFound()).andReturn();
+        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
+        when(driverAvailabilityRepository.findByIdAndDriverId(eq(12L), eq(13L))).thenReturn(Optional.of(driverAvailability));
 
-    //     // assert
-    //     verify(driverAvailabilityRepository, times(1)).findById(457L);
-    //     Map<String, Object> json = responseToJson(response);
-    //     assertEquals("UCSBOrganizations with id 457 not found", json.get("message"));
-    // }
+        // act
+        MvcResult response = mockMvc.perform(
+                delete("/api/driverAvailability?id=12")
+                        .with(csrf()))
+                .andExpect(status().isNotFound()).andReturn();
+
+        // assert
+        verify(driverAvailabilityRepository, times(1)).findByIdAndDriverId(12L, 11L);
+        verify(driverAvailabilityRepository, times(0)).delete(any());
+
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("DriverAvailability with id 12 not found", json.get("message"));
+    }
 
 }
