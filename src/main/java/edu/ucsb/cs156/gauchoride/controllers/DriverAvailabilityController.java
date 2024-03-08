@@ -58,8 +58,6 @@ public class DriverAvailabilityController extends ApiController {
     @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping("/post")
     public DriverAvailability postDriverAvailability(
-        // @Parameter(name="driverId", description="Long, driver id")
-        // @RequestParam long driverId,
 
         @Parameter(name="day", description="String, Day of the week the driver is available and allows Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday", 
                     example="Tuesday", required = true) 
