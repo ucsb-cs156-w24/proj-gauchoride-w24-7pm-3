@@ -220,5 +220,5 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         Map<String, Object> json = responseToJson(response);
         assertEquals("DriverAvailability with id 12 not found", json.get("message"));
     }
-
 }
+
