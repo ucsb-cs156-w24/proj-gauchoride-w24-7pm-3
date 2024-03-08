@@ -86,25 +86,12 @@ const ProfilePage = () => {
                 <Col md>
                     <h2>{fullName}</h2>
                     <p className="lead text-muted">{email}</p>
-        
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
                       {/* Each RoleBadge wrapped in a div with left and right margins */}
-                      <div style={{ margin: '0 5px' }}>
                           <RoleBadge role={"ROLE_USER"} currentUser={currentUser} />
-                      </div>
-                      <div style={{ margin: '0 5px' }}>
                           <RoleBadge role={"ROLE_MEMBER"} currentUser={currentUser} />
-                      </div>
-                      <div style={{ margin: '0 5px' }}>
                           <RoleBadge role={"ROLE_ADMIN"} currentUser={currentUser} />
-                      </div>
-                      <div style={{ margin: '0 5px' }}>
                           <RoleBadge role={"ROLE_DRIVER"} currentUser={currentUser} />
-                      </div>
-                      <div style={{ margin: '0 5px' }}>
                           <RoleBadge role={"ROLE_RIDER"} currentUser={currentUser} />
-                      </div>
-                  </div>
                     <p></p>
                     <>
                     <p className="lead text-muted" >{"cell phone number: "} {whichNumber ? (updatedPhoneNumber ? updatedPhoneNumber : "N/A") : (cellPhone ? cellPhone : "N/A")}</p>
