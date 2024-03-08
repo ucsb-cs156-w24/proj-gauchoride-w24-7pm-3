@@ -134,20 +134,19 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
 
 
 
+     // Authorization tests for put /api/DriverAvailability/
+     @Test
+         public void logged_out_users_cannot_edit() throws Exception {
+                 mockMvc.perform(put("/api/DriverAvailability?id=9"))
+                                 .andExpect(status().is(403));
+     }
 
-    // // Authorization tests for put /api/DriverAvailability/
-    // @Test
-    //     public void logged_out_users_cannot_edit() throws Exception {
-    //             mockMvc.perform(put("/api/DriverAvailability?id=9"))
-    //                             .andExpect(status().is(403));
-    // }
-
-    // @WithMockUser(roles = { "ADMIN" })
-    // @Test
-    // public void logged_in_admin_cannot_edit() throws Exception {
-    //         mockMvc.perform(put("/api/DriverAvailability?id=9"))
-    //                         .andExpect(status().is(403));
-    // }
+     @WithMockUser(roles = { "ADMIN" })
+     @Test
+     public void logged_in_admin_cannot_edit() throws Exception {
+             mockMvc.perform(put("/api/DriverAvailability?id=9"))
+                             .andExpect(status().is(403));
+     }
 
 
 
@@ -427,3 +426,4 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
             assertEquals("DriverAvailability with id 67 not found", json.get("message"));
     }
 }
+
