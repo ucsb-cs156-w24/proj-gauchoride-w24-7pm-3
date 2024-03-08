@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import DriverAvailabilityCreatePage from "main/pages/Drivers/DriverAvailabilityCreatePage";
+import DriverAvailabilityCreatePage from "main/pages/DriverAvailability/DriverAvailabilityCreatePage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
@@ -56,11 +56,9 @@ describe("DriverAvailabilityCreatePage tests", () => {
 
         const queryClient = new QueryClient();
         const availability = {
-            id: 1,
             day: "Sunday",
             shiftStart: "11:40AM",
             shiftEnd: "11:59AM",
-            driverID: "1",
             notes: "hi"
         };
 
@@ -96,11 +94,10 @@ describe("DriverAvailabilityCreatePage tests", () => {
 
         const submitButton = getByTestId("DriverAvailabilityForm-submit");
 
-
         // Simulating filling out the form
         fireEvent.change(dayInput, { target: { value: availability.day } });
-        fireEvent.change(shiftStartInput, { target: { value: availability.startTime } });
-        fireEvent.change(shiftEndInput, { target: { value: availability.endTime } });
+        fireEvent.change(shiftStartInput, { target: { value: availability.shiftStart } });
+        fireEvent.change(shiftEndInput, { target: { value: availability.shiftEnd } });
         fireEvent.change(driverNotes, {target: { value: String(availability.notes) } });
 
         expect(submitButton).toBeInTheDocument();
@@ -108,14 +105,14 @@ describe("DriverAvailabilityCreatePage tests", () => {
         fireEvent.click(submitButton);
 
         // Wait for the axios call to be made
-        await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
-
+        await waitFor(() => expect(axiosMock.history.get.length).toBe(2));
+       
         // Asserting that the post request was made with correct parameters
-        expect(axiosMock.history.get[0].params).toEqual(availability);
+        expect(axiosMock.history.post[0].params).toEqual(availability);
 
         // Assert that the toast and navigate functions were called with expected values
-        expect(mockToast).toBeCalledWith(`New availability - id: ${availability.id}, day: ${availability.day}, shiftStart: ${availability.startTime}, shiftEnd: ${availability.endTime}, driverID: ${availability.driverID}, notes: ${availability.notes}`);
-        expect(mockNavigate).toBeCalledWith({ "to": "/driverAvailability" });
+        expect(mockToast).toBeCalledWith(`New availability -day: ${availability.day}, shiftStart: ${availability.startTime}, shiftEnd: ${availability.endTime}, notes: ${availability.notes}`);
+        expect(mockNavigate).toBeCalledWith({ "to": "/api/driverAvailability" });
 
     });
 });
