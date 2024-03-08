@@ -1,5 +1,4 @@
-
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import DriverAvailabilityEditPage from "main/pages/DriverAvailability/DriverAvailabilityEditPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
