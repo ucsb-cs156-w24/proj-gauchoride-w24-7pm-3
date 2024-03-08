@@ -90,3 +90,4 @@ public class DriverAvailabilityController extends ApiController {
     }
 
 }
+

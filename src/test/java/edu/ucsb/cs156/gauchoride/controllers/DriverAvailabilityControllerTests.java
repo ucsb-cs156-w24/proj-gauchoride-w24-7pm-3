@@ -165,3 +165,4 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         assertEquals(expectedJson, responseString);
     }
 }
+
