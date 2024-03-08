@@ -61,14 +61,14 @@ import javax.validation.Valid;
         // @Parameter(name=&quot;driverId&quot;, description=&quot;Long, driver id&quot;)
         // @RequestParam long driverId,
 
-        @Parameter(name=&quot;day&quot;, description=&quot;String, Day of the week ride is requested (Monday - Sunday) and allows Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday&quot;, 
+        @Parameter(name=&quot;day&quot;, description=&quot;String, Day of the week the driver is available and allows Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday&quot;, 
                     example=&quot;Tuesday&quot;, required = true) 
         @RequestParam String day,
 
-        @Parameter(name=&quot;startTime&quot;, description=&quot;String, Time the ride starts HH:MM(A/P)M&quot;, example=&quot;12:30AM&quot;, required = true)
+        @Parameter(name=&quot;startTime&quot;, description=&quot;String, Time the driver starts drivingHH:MM(A/P)M&quot;, example=&quot;12:30AM&quot;, required = true)
         @RequestParam String startTime,
 
-        @Parameter(name=&quot;endTime&quot;, description=&quot;String, Time the ride ends HH:MM(A/P)M&quot;, example=&quot;12:30AM&quot;, required = true)
+        @Parameter(name=&quot;endTime&quot;, description=&quot;String, Time the driver ends driving HH:MM(A/P)M&quot;, example=&quot;12:30AM&quot;, required = true)
         @RequestParam String endTime,
 
         @Parameter(name=&quot;notes&quot;, description=&quot;String, Extra information&quot;, example=&quot;We have two people riding&quot;, required = true)
