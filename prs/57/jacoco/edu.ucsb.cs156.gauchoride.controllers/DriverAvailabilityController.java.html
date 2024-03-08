@@ -106,7 +106,7 @@ import javax.validation.Valid;
             @RequestParam Long id) {
         DriverAvailability driverAvailability;
 <span class="fc" id="L108">        driverAvailability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())</span>
-<span class="pc" id="L109">                .orElseThrow(() -&gt; new EntityNotFoundException(DriverAvailability.class, id));;</span>
+<span class="fc" id="L109">                .orElseThrow(() -&gt; new EntityNotFoundException(DriverAvailability.class, id));;</span>
 <span class="fc" id="L110">        return driverAvailability;</span>
     }
 

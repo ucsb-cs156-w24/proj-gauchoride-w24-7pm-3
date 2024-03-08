@@ -58,8 +58,8 @@ import edu.ucsb.cs156.gauchoride.entities.User;
 <span class="fc bfc" id="L58" title="All 2 branches covered.">                if (user.getDriver()) {</span>
 <span class="fc" id="L59">                    revisedAuthorities.add(new SimpleGrantedAuthority(&quot;ROLE_DRIVER&quot;));</span>
                 }
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">                if (user.getRider()) {</span>
-<span class="nc" id="L62">                    revisedAuthorities.add(new SimpleGrantedAuthority(&quot;ROLE_RIDER&quot;));</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                if (user.getRider()) {</span>
+<span class="fc" id="L62">                    revisedAuthorities.add(new SimpleGrantedAuthority(&quot;ROLE_RIDER&quot;));</span>
                 }
 <span class="fc" id="L64">                Authentication newAuth = new OAuth2AuthenticationToken(principal, revisedAuthorities,</span>
 <span class="fc" id="L65">                        (((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()));</span>
