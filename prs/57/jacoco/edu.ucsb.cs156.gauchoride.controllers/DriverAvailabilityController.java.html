@@ -106,10 +106,24 @@ import javax.validation.Valid;
             @RequestParam Long id) {
         DriverAvailability driverAvailability;
 <span class="fc" id="L108">        driverAvailability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())</span>
-<span class="fc" id="L109">                .orElseThrow(() -&gt; new EntityNotFoundException(DriverAvailability.class, id));;</span>
+<span class="pc" id="L109">                .orElseThrow(() -&gt; new EntityNotFoundException(DriverAvailability.class, id));;</span>
 <span class="fc" id="L110">        return driverAvailability;</span>
     }
 
-}
+    @Operation(summary = &quot;Delete an availability if owned by current user&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteDriverAvailability(
+        @Parameter(name=&quot;id&quot;, description=&quot;long, Id of the DriverAvailability to be deleted&quot;, 
+        required = true) @RequestParam long id) {
 
+        DriverAvailability availability;
+
+<span class="fc" id="L122">        availability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())</span>
+<span class="fc" id="L123">            .orElseThrow(() -&gt; new EntityNotFoundException(DriverAvailability.class, id));</span>
+<span class="fc" id="L124">        driverAvailabilityRepository.delete(availability);</span>
+        
+<span class="fc" id="L126">        return genericMessage(&quot;DriverAvailability with id %s deleted&quot;.formatted(id));</span>
+    }
+}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
