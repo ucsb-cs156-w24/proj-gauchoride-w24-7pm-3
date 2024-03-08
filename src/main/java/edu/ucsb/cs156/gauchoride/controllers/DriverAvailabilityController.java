@@ -53,5 +53,7 @@ public class DriverAvailabilityController extends ApiController {
                 .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));;
         return driverAvailability;
     }
+
 }
+
 
