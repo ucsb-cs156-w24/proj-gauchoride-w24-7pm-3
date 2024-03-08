@@ -24,7 +24,7 @@
 |------|------------|
 | w24-7pm-1 | <https://gauchoride-qa.dokku-13.cs.ucsb.edu/> | 
 | w24-7pm-2 | <https://gauchoride-qa.dokku-14.cs.ucsb.edu/>  | 
-| w24-7pm-3 | <https://gauchoride-qa.dokku-15.cs.ucsb.edu/>  | 
+| w24-7pm-3 | <https://gauchoride-qa.dokku-15.cs.ucsb.edu/](http://proj-gauchoride-qa-deployment.dokku-15.cs.ucsb.edu/>  | 
 | w24-7pm-4 | <https://gauchoride-qa.dokku-16.cs.ucsb.edu/>  | 
 
 # Setup before running application
