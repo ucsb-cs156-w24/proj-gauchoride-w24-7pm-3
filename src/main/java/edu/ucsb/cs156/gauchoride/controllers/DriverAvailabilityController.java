@@ -58,8 +58,6 @@ public class DriverAvailabilityController extends ApiController {
     @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping("/post")
     public DriverAvailability postDriverAvailability(
-        // @Parameter(name="driverId", description="Long, driver id")
-        // @RequestParam long driverId,
 
         @Parameter(name="day", description="String, Day of the week the driver is available and allows Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday", 
                     example="Tuesday", required = true) 
@@ -89,5 +87,23 @@ public class DriverAvailabilityController extends ApiController {
         return savedDriverAvailability;
     }
 
+}
+
+
+    @Operation(summary = "Delete an availability if owned by current user")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("")
+    public Object deleteDriverAvailability(
+        @Parameter(name="id", description="long, Id of the DriverAvailability to be deleted", 
+        required = true) @RequestParam long id) {
+
+        DriverAvailability availability;
+
+        availability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())
+            .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));
+        driverAvailabilityRepository.delete(availability);
+        
+        return genericMessage("DriverAvailability with id %s deleted".formatted(id));
+    }
 }
 
