@@ -24,7 +24,10 @@ import RiderApplicationEditPageMember from "main/pages/RiderApplication/RiderApp
 import RiderApplicationIndexPageMember from "main/pages/RiderApplication/RiderApplicationIndexPageMember";
 import RiderApplicationShowPage from "main/pages/RiderApplication/RiderApplicationShowPage";
 
+
 import RiderApplicationIndexPageAdmin from "main/pages/RiderApplication/RiderApplicationIndexPageAdmin";
+import AdminRiderApplicationReviewPage from "main/pages/AdminRiderApplication/AdminRiderApplicationReviewPage";
+
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -87,6 +90,7 @@ function App() {
         {
           (hasRole(currentUser, "ROLE_DRIVER") ) && <Route exact path="/drivershifts" element={<DriverDashboardPage />} />
         }
+        {
           (hasRole(currentUser, "ROLE_MEMBER")) && <Route exact path="/apply/rider" element={<RiderApplicationIndexPageMember />} />
         }
         {
@@ -99,7 +103,7 @@ function App() {
           (hasRole(currentUser, "ROLE_ADMIN")) && <Route exact path="/admin/applications/riders" element={<RiderApplicationIndexPageAdmin />} />
         }
         {
-          (hasRole(currentUser, "ROLE_ADMIN")) && <Route exact path="/admin/applications/riders/review/:id" element={<RiderApplicationEditPageMember />} />
+          (hasRole(currentUser, "ROLE_ADMIN")) && <Route exact path="/admin/applications/riders/review/:id" element={<AdminRiderApplicationReviewPage />} />
         }
         {
           (hasRole(currentUser, "ROLE_MEMBER")) && <Route exact path="/apply/rider/edit/:id" element={<RiderApplicationEditPageMember />} />
