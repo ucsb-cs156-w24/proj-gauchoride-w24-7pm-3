@@ -128,7 +128,7 @@ describe("RiderApplicationEditPage tests", () => {
             const updatedDateField =getByTestId("RiderApplicationForm-updated_date");
             const cancelledDateField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
             const descriptionField = getByTestId("RiderApplicationForm-description");
-            const notesField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
+            const notesField = screen.queryByTestId("RiderApplicationForm-notes");
 
             expect(statusField).toHaveValue("pending");
             expect(permNumberField).toHaveValue("1234567");
@@ -162,7 +162,7 @@ describe("RiderApplicationEditPage tests", () => {
             const updatedDateField =getByTestId("RiderApplicationForm-updated_date");
             const cancelledDateField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
             const descriptionField = getByTestId("RiderApplicationForm-description");
-            const notesField = screen.queryByTestId("RiderApplicationForm-cancelled_date");
+            const notesField = screen.queryByTestId("RiderApplicationForm-notes");
             const submitButton = getByTestId("RiderApplicationForm-submit")
 
             expect(statusField).toHaveValue("pending");

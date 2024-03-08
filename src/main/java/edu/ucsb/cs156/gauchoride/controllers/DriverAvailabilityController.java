@@ -54,6 +54,20 @@ public class DriverAvailabilityController extends ApiController {
         return driverAvailability;
     }
 
-}
+    @Operation(summary = "Delete an availability if owned by current user")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("")
+    public Object deleteDriverAvailability(
+        @Parameter(name="id", description="long, Id of the DriverAvailability to be deleted", 
+        required = true) @RequestParam long id) {
 
+        DriverAvailability availability;
+
+        availability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())
+            .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));
+        driverAvailabilityRepository.delete(availability);
+        
+        return genericMessage("DriverAvailability with id %s deleted".formatted(id));
+    }
+}
 
