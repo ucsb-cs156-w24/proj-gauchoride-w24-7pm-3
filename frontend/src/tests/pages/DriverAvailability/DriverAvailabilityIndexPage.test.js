@@ -79,24 +79,6 @@ describe("DriverAvailabilityIndexPage tests", () => {
         expect(createDriverAvailabilityButton).toHaveAttribute("style", "float: right;");
     });
 
-    // test("renders three rides without crashing for regular user", async () => {
-    //     setupUserOnly();
-    //     const queryClient = new QueryClient();
-    //     axiosMock.onGet("/api/driverAvailability").reply(200, driverAvailabilityFixtures.threeAvailabilities);
-
-    //     render(
-    //         <QueryClientProvider client={queryClient}>
-    //             <MemoryRouter>
-    //                 <DriverAvailabilityIndexPage />
-    //             </MemoryRouter>
-    //         </QueryClientProvider>
-    //     );
-
-    //     await waitFor(() => { expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); });
-    //     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
-    //     expect(screen.getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
-
-    // });
 
     test("renders three rides without crashing for admin user", async () => {
         setupAdminUser();
