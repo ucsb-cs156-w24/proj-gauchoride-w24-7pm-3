@@ -21,7 +21,6 @@ function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "
    
     const testIdPrefix = "DriverAvailabilityForm";
 
-
     return (
 
         <Form onSubmit={handleSubmit(submitAction)}>
@@ -43,11 +42,11 @@ function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "
             <Form.Group className="mb-3" >
                 <Form.Label htmlFor="driverId">Driver Id</Form.Label>
                 <Form.Control
-                    data-testid={testIdPrefix + "-userId"}
+                    data-testid={testIdPrefix + "-driverId"}
                     id="driverId"
                     type="text"
                     {...register("driverId")}
-                    defaultValue={initialContents?.userId}
+                    defaultValue={initialContents?.driverId}
                     disabled
                 />
             </Form.Group>
@@ -55,7 +54,7 @@ function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "
             <Form.Group className="mb-3" >
                 <Form.Label htmlFor="day">Day of the Week</Form.Label>
                 <Form.Select
-                    data-testid={testIdPrefix + "-status"}
+                    data-testid={testIdPrefix + "-day"}
                     id="day"
                     isInvalid={Boolean(errors.day)}
                     {...register("day",{
@@ -139,7 +138,7 @@ function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "
                 data-testid={testIdPrefix + "-submit"}
             >
                 {buttonLabel}
-            </Button>
+            </Button> 
             
             <Button
                 variant="Secondary"

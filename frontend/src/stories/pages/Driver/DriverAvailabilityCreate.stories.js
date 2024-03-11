@@ -1,6 +1,10 @@
 import React from 'react';
 
 import DriverAvailabilityCreatePage from 'main/pages/DriverAvailability/DriverAvailabilityCreatePage';
+import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
+import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
+import { rest } from "msw";
+
 
 export default {
     title: 'pages/DriverAvailabilityCreatePage',
