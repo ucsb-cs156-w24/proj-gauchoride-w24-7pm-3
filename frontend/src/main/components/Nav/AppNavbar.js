@@ -91,7 +91,7 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
               {
                 hasRole(currentUser, "ROLE_ADMIN") && (
                   <NavDropdown title="Driver Availability" id="appnavbar-driverAvailability-dropdown" data-testid="appnavbar-driverAvailability-dropdown" >
-                  <NavDropdown.Item as={Link} to="/driverAvailability">Dashboard</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/driverAvailability">Driver Availability</NavDropdown.Item>
                 </NavDropdown>
                 )
               }

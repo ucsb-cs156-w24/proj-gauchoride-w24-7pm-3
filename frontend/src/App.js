@@ -116,7 +116,7 @@ function App() {
           (hasRole(currentUser, "ROLE_ADMIN")) && <Route exact path="/admin/driverAvailability/" element={<DriverAvailabilityCreatePage />} />
         }
         {
-          (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_DRIVER") || hasRole(currentUser, "ROLE_RIDER")) && <Route exact path="/driverAvailability/" element={<DriverAvailabilityIndexPage />} />
+          (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_DRIVER")) && <Route exact path="/driverAvailability/" element={<DriverAvailabilityIndexPage />} />
         }
         {
           (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_DRIVER")) && <Route exact path="/driverAvailability/create" element={<DriverAvailabilityCreatePage />} />
