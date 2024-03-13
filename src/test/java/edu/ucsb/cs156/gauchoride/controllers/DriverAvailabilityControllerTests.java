@@ -54,8 +54,8 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
     @MockBean
     private UserRepository UserRepository;
 
-    @MockBean
-    private CurrentUserService currentUserService;
+//     @MockBean
+//     private CurrentUserService currentUserService;
 
     @Test
     public void logged_out_users_cannot_get_all() throws Exception {
@@ -155,27 +155,28 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
     @Test
     public void user_can_delete_availability() throws Exception {
         // arrange
-
+        long userId = currentUserService.getCurrentUser().getUser().getId();
+        
         DriverAvailability driverAvailability = DriverAvailability.builder()
-                .id(12)
-                .driverId(13L)
+                .driverId(userId)
                 .day("Monday")
                 .startTime("11:00AM")
                 .endTime("11:30AM")
+                .notes("Available all day")
                 .build();
 
-        User testUser = User.builder()
-                .id(13L)
-                .email("capo@gmail.com")
-                .admin(true)
-                .driver(true)
-                .build();
-        CurrentUser currentUser = CurrentUser.builder()
-                .user(testUser)
-                .build();
+        // User testUser = User.builder()
+        //         .id(13L)
+        //         .email("capo@gmail.com")
+        //         .admin(true)
+        //         .driver(true)
+        //         .build();
+        // CurrentUser currentUser = CurrentUser.builder()
+        //         .user(testUser)
+        //         .build();
 
-        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
-        when(driverAvailabilityRepository.findByIdAndDriverId(eq(12L), eq(13L))).thenReturn(Optional.of(driverAvailability));
+        // when(currentUserService.getCurrentUser()).thenReturn(currentUser);
+        when(driverAvailabilityRepository.findByIdAndDriverId(eq(12L), eq(userId))).thenReturn(Optional.of(driverAvailability));
 
         // act
         MvcResult response = mockMvc.perform(
@@ -184,8 +185,8 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
                 .andExpect(status().isOk()).andReturn();
 
         // assert
-        verify(driverAvailabilityRepository, times(1)).findByIdAndDriverId(12L, 13L);
-        verify(driverAvailabilityRepository, times(1)).delete(any());
+        verify(driverAvailabilityRepository, times(1)).findByIdAndDriverId(eq(12L), eq(userId));
+        verify(driverAvailabilityRepository, times(1)).delete(driverAvailability);
 
         Map<String, Object> json = responseToJson(response);
         assertEquals("DriverAvailability with id 12 deleted", json.get("message"));
@@ -195,27 +196,29 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
     @Test
     public void user_cannot_delete_availbility_not_owned()
             throws Exception {
+        long userId = currentUserService.getCurrentUser().getUser().getId();
+        long otherUserId = userId + 1;
         // arrange
         DriverAvailability driverAvailability = DriverAvailability.builder()
-                .id(12)
-                .driverId(13L)
+                .driverId(userId)
                 .day("Monday")
                 .startTime("11:00AM")
                 .endTime("11:30AM")
+                .notes("Available all day")
                 .build();
 
-        User testUser = User.builder()
-                .id(11L)
-                .email("capo@gmail.com")
-                .admin(true)
-                .driver(true)
-                .build();
-        CurrentUser currentUser = CurrentUser.builder()
-                .user(testUser)
-                .build();
+        // User testUser = User.builder()
+        //         .id(11L)
+        //         .email("capo@gmail.com")
+        //         .admin(true)
+        //         .driver(true)
+        //         .build();
+        // CurrentUser currentUser = CurrentUser.builder()
+        //         .user(testUser)
+        //         .build();
 
-        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
-        when(driverAvailabilityRepository.findByIdAndDriverId(eq(12L), eq(13L))).thenReturn(Optional.of(driverAvailability));
+        // when(currentUserService.getCurrentUser()).thenReturn(currentUser);
+        when(driverAvailabilityRepository.findByIdAndDriverId(eq(12L), eq(otherUserId))).thenReturn(Optional.of(driverAvailability));
 
         // act
         MvcResult response = mockMvc.perform(
@@ -224,7 +227,7 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
                 .andExpect(status().isNotFound()).andReturn();
 
         // assert
-        verify(driverAvailabilityRepository, times(1)).findByIdAndDriverId(12L, 11L);
+        verify(driverAvailabilityRepository, times(1)).findByIdAndDriverId(eq(12L), eq(userId));
         verify(driverAvailabilityRepository, times(0)).delete(any());
 
         Map<String, Object> json = responseToJson(response);
@@ -246,7 +249,6 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
              mockMvc.perform(put("/api/DriverAvailability?id=9"))
                              .andExpect(status().is(403));
      }
-
 
 
     // PUT (UPDATE)

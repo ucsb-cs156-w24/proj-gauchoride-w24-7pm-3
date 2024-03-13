@@ -85,7 +85,7 @@ public class DriverAvailabilityController extends ApiController {
         driverAvailabilityRepository.save(driverAvailability);
         return driverAvailability;
     }
-}
+
 
     @Operation(summary = "Delete an availability if owned by current user")
     @PreAuthorize("hasRole('ROLE_USER')")
