@@ -283,15 +283,27 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         // arrange
         DriverAvailability availability1 = new DriverAvailability();
         availability1.setId(1L);
-        availability1.setDriverId(currentUserService.getCurrentUser().getUser().getId());
+        availability1.setDriverId(1L);
         availability1.setDay("Monday");
         availability1.setStartTime("9:00AM");
         availability1.setEndTime("5:00PM");
         availability1.setNotes("Available all day");
         
         long xd = 1;
-        when(driverAvailabilityRepository.findAllByDriverId(currentUserService.getCurrentUser().getUser().getId())).thenReturn(List.of(availability1));
+        when(driverAvailabilityRepository.findAllByDriverId(1L)).thenReturn(List.of(availability1));
 
+        User testUser = User.builder()
+                .id(1L)
+                .email("capo@gmail.com")
+                .admin(true)
+                .driver(true)
+                .build();
+
+        CurrentUser currentUser = CurrentUser.builder()
+                .user(testUser)
+                .build();
+
+        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
 
         // act
         MvcResult response = mockMvc.perform(get("/api/driverAvailability"))
@@ -322,8 +334,20 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         availability1.setEndTime("5:00PM");
         availability1.setNotes("Available all day");
         
+        User testUser = User.builder()
+        .id(1L)
+        .email("capo@gmail.com")
+        .admin(true)
+        .driver(true)
+        .build();
+
+        CurrentUser currentUser = CurrentUser.builder()
+                .user(testUser)
+                .build();
+
+        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
         long xd = 1;
-        when(driverAvailabilityRepository.findByIdAndDriverId(1L, currentUserService.getCurrentUser().getUser().getId())).thenReturn(Optional.of(availability1));
+        when(driverAvailabilityRepository.findByIdAndDriverId(1L, 1L)).thenReturn(Optional.of(availability1));
 
         // act
         MvcResult response = mockMvc.perform(get("/api/driverAvailability/id?id=1"))
@@ -341,6 +365,18 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
     public void holymolyomah    () throws Exception {
         // Arrange: Mock the repository to return an empty Optional when findById is called
         when(driverAvailabilityRepository.findByIdAndDriverId(anyLong(), anyLong())).thenReturn(Optional.empty());
+
+        User testUser = User.builder()
+                .id(1L)
+                .email("capo@gmail.com")
+                .admin(true)
+                .driver(true)
+                .build();
+        CurrentUser currentUser = CurrentUser.builder()
+                .user(testUser)
+                .build();
+
+        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
 
         mockMvc.perform(get("/api/driverAvailability/id?id=1")) 
                 .andExpect(status().isNotFound()).andReturn();
