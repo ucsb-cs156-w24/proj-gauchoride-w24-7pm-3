@@ -212,3 +212,4 @@ describe("DriverAvailabilityTable tests", () => {
   });
 
 });
+

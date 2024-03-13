@@ -103,3 +103,4 @@ public class DriverAvailabilityController extends ApiController {
         return genericMessage("DriverAvailability with id %s deleted".formatted(id));
     }
 }
+

@@ -1,14 +1,34 @@
+
+import React from 'react';
+import { useBackend } from 'main/utils/useBackend';
+
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
+import DriverAvailabilityTable from 'main/components/DriverAvailability/DriverAvailabilityTable';
+import {useCurrentUser } from 'main/utils/currentUser'
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 export default function DriverAvailabilityIndexPage() {
 
-  // Stryker disable all : placeholder for future implementation
+  const currentUser = useCurrentUser();
+
+  const { data: driverAvailability, error: _error, status: _status } =
+  useBackend(
+    // Stryker disable all : hard to test for query caching
+    ["/api/driverAvailability/admin/all"],
+    { method: "GET", url: "/api/driverAvailability/admin/all" },
+    []
+    // Stryker restore all 
+  );
+
   return (
     <BasicLayout>
       <div className="pt-2">
-        <h1>Index page not yet implemented</h1>
-        <p><a href="/driverAvailability/create">Create</a></p>
-        <p><a href="/driverAvailability/edit/1">Edit</a></p>
+        <Button style={{ float: "right" }} as={Link} to="/driverAvailability/create">
+          Create Driver Availability
+        </Button>
+        <h1>Driver Availability</h1>
+        <DriverAvailabilityTable driverAvailability={driverAvailability} currentUser={currentUser} />
       </div>
     </BasicLayout>
   )
