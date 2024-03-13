@@ -240,7 +240,7 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         // arrange
         DriverAvailability availability = new DriverAvailability();
         availability.setId(0L); // Assuming the ID is set after save operation
-        availability.setDriverId(currentUserService.getCurrentUser().getUser().getId());
+        availability.setDriverId(11L);
         availability.setDay("Monday");
         availability.setStartTime("9:00AM");
         availability.setEndTime("5:00PM");
@@ -283,23 +283,32 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
         // arrange
         DriverAvailability availability1 = new DriverAvailability();
         availability1.setId(1L);
-        availability1.setDriverId(currentUserService.getCurrentUser().getUser().getId());
+        availability1.setDriverId(1L);
         availability1.setDay("Monday");
         availability1.setStartTime("9:00AM");
         availability1.setEndTime("5:00PM");
         availability1.setNotes("Available all day");
-        
+        User testUser = User.builder()
+                .id(1L)
+                .email("capo@gmail.com")
+                .admin(true)
+                .driver(true)
+                .build();
+        CurrentUser currentUser = CurrentUser.builder()
+                .user(testUser)
+                .build();
+
+        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
         long xd = 1;
-        when(driverAvailabilityRepository.findAllByDriverId(currentUserService.getCurrentUser().getUser().getId())).thenReturn(List.of(availability1));
+        when(driverAvailabilityRepository.findAllByDriverId(1L)).thenReturn(List.of(availability1));
 
 
         // act
-        MvcResult response = mockMvc.perform(get("/api/driverAvailability"))
+        MvcResult response = mockMvc.perform(get("/api/driverAvailability").with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
 
         // assert
-        // verify(driverAvailabilityRepository, times(1)).findById(currentUserService.getCurrentUser().getUser().getId());
         String expectedJson = mapper.writeValueAsString(List.of(availability1));
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
