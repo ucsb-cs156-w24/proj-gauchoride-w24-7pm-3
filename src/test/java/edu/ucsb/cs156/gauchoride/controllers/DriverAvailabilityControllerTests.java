@@ -522,26 +522,28 @@ public class DriverAvailabilityControllerTests extends ControllerTestCase {
     @WithMockUser(roles = { "DRIVER" })
     @Test
     public void a_driver_user_can_post_a_new_driver_availability() throws Exception {
+        long userId = currentUserService.getCurrentUser().getUser().getId();
+
         // arrange
         DriverAvailability availability = new DriverAvailability();
         availability.setId(0L); // Assuming the ID is set after save operation
-        availability.setDriverId(11L);
+        availability.setDriverId(userId);
         availability.setDay("Monday");
         availability.setStartTime("9:00AM");
         availability.setEndTime("5:00PM");
         availability.setNotes("haha");
 
-        User testUser = User.builder()
-                .id(11L)
-                .email("capo@gmail.com")
-                .admin(true)
-                .driver(true)
-                .build();
-        CurrentUser currentUser = CurrentUser.builder()
-                .user(testUser)
-                .build();
+        // User testUser = User.builder()
+        //         .id(11L)
+        //         .email("capo@gmail.com")
+        //         .admin(true)
+        //         .driver(true)
+        //         .build();
+        // CurrentUser currentUser = CurrentUser.builder()
+        //         .user(testUser)
+        //         .build();
 
-        when(currentUserService.getCurrentUser()).thenReturn(currentUser);
+        // when(currentUserService.getCurrentUser()).thenReturn(currentUser);
         when(driverAvailabilityRepository.save(availability)).thenReturn(availability);
 
         MvcResult response = mockMvc.perform(
