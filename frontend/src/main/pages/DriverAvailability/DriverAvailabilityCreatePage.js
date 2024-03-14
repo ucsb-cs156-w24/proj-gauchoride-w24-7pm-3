@@ -7,13 +7,13 @@ import { toast } from "react-toastify";
 export default function DriverAvailabilityCreatePage({storybook=false}) {
 
     const objectToAxiosParams = (availability) => ({
-        url: "/api/driverAvailability/new", 
+        url: "/api/driverAvailability/post", 
         method: "POST",
         params: { 
             day: availability.day,
-            shiftStart: availability.startTime, 
-            shiftEnd: availability.endTime,
-            driverID: availability.driverID,
+            startTime: availability.startTime, 
+            endTime: availability.endTime,
+            //driverID: availability.driverID,
             notes: availability.notes
         }
     });
@@ -25,7 +25,7 @@ export default function DriverAvailabilityCreatePage({storybook=false}) {
         objectToAxiosParams,
         { onSuccess },
         // Stryker disable next-line all : hard to set up test for caching
-        ["/api/driverAvailability/new"]
+        ["/api/driverAvailability/post"]
     );
 
     const { isSuccess } = mutation
@@ -35,7 +35,7 @@ export default function DriverAvailabilityCreatePage({storybook=false}) {
     }
 
     if (isSuccess && !storybook) {
-        return <Navigate to="/api/driverAvailability" />
+        return <Navigate to="/driverAvailability" />
     }
 
     return (

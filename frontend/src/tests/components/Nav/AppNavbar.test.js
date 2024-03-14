@@ -695,5 +695,163 @@ describe("AppNavbar tests", () => {
         expect(applyMenu).toBeInTheDocument();      
     });
 
+    test("renders driverAvailability links correctly for admin user", async () => {
+
+        const currentUser = currentUserFixtures.adminOnly;
+        const doLogin = jest.fn();
+
+        const { getByText , getByTestId, findByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                    </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        await waitFor(() => expect(getByText("Welcome, Phill Conrad")).toBeInTheDocument());
+        
+        const driverAvailabilityMenu = getByTestId("appnavbar-driverAvailability-dropdown");
+        expect(driverAvailabilityMenu).toBeInTheDocument(); 
+
+        await findByTestId("appnavbar-driverAvailability-dropdown");
+        const dropdown = getByTestId("appnavbar-driverAvailability-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+                
+    });
+
+    test("renders driverApplciation links correctly for admin NO user", async () => {
+
+        const currentUser = currentUserFixtures.adminOnlyNoUser;
+        const doLogin = jest.fn();
+
+        const { getByText , getByTestId, findByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                    </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        await waitFor(() => expect(getByText("Welcome, Phill Conrad")).toBeInTheDocument());
+        
+        const driverAvailabilityMenu = getByTestId("appnavbar-driverAvailability-dropdown");
+        expect(driverAvailabilityMenu).toBeInTheDocument(); 
+
+        await findByTestId("appnavbar-driverAvailability-dropdown");
+        const dropdown = getByTestId("appnavbar-driverAvailability-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+                
+    });
+
+    test("renders driverApplication links correctly for driver", async () => {
+
+        const currentUser = currentUserFixtures.driverOnly;
+        const doLogin = jest.fn();
+
+        const { getByText , getByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        await waitFor(() => expect(getByText("Welcome, Phillip Conrad")).toBeInTheDocument());
+        const rideMenu = getByTestId("appnavbar-driverAvailability-dropdown");
+        expect(rideMenu).toBeInTheDocument();        
+    });
+
+    test("renders driverAvailability links correctly for driver", async () => {
+
+        const currentUser = currentUserFixtures.driverOnly;
+        const doLogin = jest.fn();
+
+        const { getByText , getByTestId, findByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        await waitFor(() => expect(getByText("Welcome, Phillip Conrad")).toBeInTheDocument());
+        
+        const driverAvailabilityMenu = getByTestId("appnavbar-driverAvailability-dropdown");
+        expect(driverAvailabilityMenu).toBeInTheDocument(); 
+
+        await findByTestId("appnavbar-driverAvailability-dropdown");
+        const dropdown = getByTestId("appnavbar-driverAvailability-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();       
+
+    });
+
+    test("renders ride links correctly for admin", async () => {
+
+        const currentUser = currentUserFixtures.adminOnly;
+        const doLogin = jest.fn();
+
+        const { getByText , getByTestId, findByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        await waitFor(() => expect(getByText("Welcome, Phill Conrad")).toBeInTheDocument());
+        
+        const driverAvailabilityMenu = getByTestId("appnavbar-driverAvailability-dropdown");
+        expect(driverAvailabilityMenu).toBeInTheDocument(); 
+
+        await findByTestId("appnavbar-driverAvailability-dropdown");
+        const dropdown = getByTestId("appnavbar-driverAvailability-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();     
+
+    });
+
+    test("not render driverAvailability links for regular user", async () => {
+
+        const currentUser = currentUserFixtures.userOnly;
+        const doLogin = jest.fn();
+
+        const { getByText } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        await waitFor(() => expect(getByText("Welcome, Phillip Conrad")).toBeInTheDocument());
+        const driverAvailabilityMenu = screen.queryByTestId("appnavbar-driverAvailability-dropdown");
+        expect(driverAvailabilityMenu).not.toBeInTheDocument();        
+    });
+
+    test("Create driverAvailability should not be available for user that is a Rider and neither Admin nor Driver", async () => {
+
+        const currentUser = currentUserFixtures.riderOnly;
+        const doLogin = jest.fn();
+
+        const { getByTestId, findByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        const availabilities = screen.queryByTestId("appnavbar-driverAvailability-dropdown");
+        expect(availabilities).not.toBeInTheDocument();
+
+    });
+
 });
 

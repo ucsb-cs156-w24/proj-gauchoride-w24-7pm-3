@@ -7,7 +7,7 @@ import { rest } from "msw";
 
 
 export default {
-    title: 'pages/DriverAvailabilityCreatePage',
+    title: 'pages/DriverAvailability/DriverAvailabilityCreatePage',
     component: DriverAvailabilityCreatePage
 };
 
@@ -22,7 +22,7 @@ Default.parameters = {
         rest.get('/api/systemInfo', (_req, res, ctx) => {
             return res(ctx.json(systemInfoFixtures.showingNeither));
         }),
-        rest.post('/new', (req, res, ctx) => {
+        rest.post('/api/driverAvailability/post', (req, res, ctx) => {
             window.alert("POST: " + JSON.stringify(req.url));
             return res(ctx.status(200),ctx.json({}));
         }),
