@@ -840,7 +840,7 @@ describe("AppNavbar tests", () => {
         const currentUser = currentUserFixtures.riderOnly;
         const doLogin = jest.fn();
 
-        const { } = render(
+        render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <AppNavbar currentUser={currentUser} doLogin={doLogin} />
