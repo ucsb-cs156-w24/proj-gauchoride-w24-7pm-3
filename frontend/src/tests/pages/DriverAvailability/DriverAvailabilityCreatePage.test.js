@@ -1,3 +1,4 @@
+
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import DriverAvailabilityCreatePage from "main/pages/DriverAvailability/DriverAvailabilityCreatePage";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -116,3 +117,4 @@ describe("DriverAvailabilityCreatePage tests", () => {
 
     });
 });
+
