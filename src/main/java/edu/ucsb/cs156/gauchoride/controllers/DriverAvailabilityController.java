@@ -55,6 +55,7 @@ public class DriverAvailabilityController extends ApiController {
         return driverAvailability;
     }
 
+
     @Operation(summary = "Update a driver Availability, only user's if not Driver/Admin")
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_DRIVER') || hasRole('ROLE_USER')")
     @PutMapping("")
@@ -86,6 +87,40 @@ public class DriverAvailabilityController extends ApiController {
         return driverAvailability;
     }
 
+  
+    @Operation(summary = "Create a new Driver Availability")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @PostMapping("/post")
+    public DriverAvailability postDriverAvailability(
+
+        @Parameter(name="day", description="String, Day of the week the driver is available and allows Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday", 
+                    example="Tuesday", required = true) 
+        @RequestParam String day,
+
+        @Parameter(name="startTime", description="String, Time the driver starts drivingHH:MM(A/P)M", example="12:30AM", required = true)
+        @RequestParam String startTime,
+
+        @Parameter(name="endTime", description="String, Time the driver ends driving HH:MM(A/P)M", example="12:30AM", required = true)
+        @RequestParam String endTime,
+
+        @Parameter(name="notes", description="String, Extra information", example="We have two people riding", required = true)
+        @RequestParam String notes
+        )
+        {
+
+        DriverAvailability driverAvailability = new DriverAvailability();
+        
+        driverAvailability.setDriverId(getCurrentUser().getUser().getId());
+        driverAvailability.setDay(day);
+        driverAvailability.setStartTime(startTime);
+        driverAvailability.setEndTime(endTime);
+        driverAvailability.setNotes(notes);
+
+        DriverAvailability savedDriverAvailability = driverAvailabilityRepository.save(driverAvailability);
+
+        return savedDriverAvailability;
+    }
+
 
     @Operation(summary = "Delete an availability if owned by current user")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -103,3 +138,4 @@ public class DriverAvailabilityController extends ApiController {
         return genericMessage("DriverAvailability with id %s deleted".formatted(id));
     }
 }
+
