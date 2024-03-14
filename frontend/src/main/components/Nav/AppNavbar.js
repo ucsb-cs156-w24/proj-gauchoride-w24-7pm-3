@@ -77,6 +77,7 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
                 hasRole(currentUser, "ROLE_ADMIN") && (
                   <NavDropdown title="Admin" id="appnavbar-admin-dropdown" data-testid="appnavbar-admin-dropdown" >
                     <NavDropdown.Item as={Link} to="/admin/users">Users</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/admin/applications/riders">Rider Applications</NavDropdown.Item>
                   </NavDropdown>
                 )
               }
@@ -114,12 +115,11 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
                   <Nav.Link id ="appnavbar-driver-link" data-testid="appnavbar-driver" as={Link} to="/drivers/list">Drivers Page</Nav.Link>
                 )
               }
-              {
-                hasRole(currentUser, "ROLE_MEMBER") && (
-                  <Nav.Link as={Link} to="/apply/rider">Apply to be a Rider</Nav.Link>
+              { 
+                !(hasRole(currentUser, "ROLE_RIDER")) && (
+                <Nav.Link id ="appnavbar-rider-link" data-testid="appnavbar-rider" as={Link} to="/apply/rider">Apply to be a Rider</Nav.Link>
                 )
               }
-
             </Nav>
 
             <Nav className="ml-auto">
