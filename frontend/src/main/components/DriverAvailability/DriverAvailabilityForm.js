@@ -21,7 +21,6 @@ function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "
    
     const testIdPrefix = "DriverAvailabilityForm";
 
-
     return (
 
         <Form onSubmit={handleSubmit(submitAction)}>
@@ -139,7 +138,7 @@ function DriverAvailabilityForm({ initialContents, submitAction, buttonLabel = "
                 data-testid={testIdPrefix + "-submit"}
             >
                 {buttonLabel}
-            </Button>
+            </Button> 
             
             <Button
                 variant="Secondary"
