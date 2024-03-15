@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.gauchoride.controllers;
 
 import edu.ucsb.cs156.gauchoride.entities.DriverAvailability;
+import edu.ucsb.cs156.gauchoride.entities.Ride;
 import edu.ucsb.cs156.gauchoride.errors.EntityNotFoundException;
 import edu.ucsb.cs156.gauchoride.repositories.DriverAvailabilityRepository;
 
@@ -54,6 +55,39 @@ public class DriverAvailabilityController extends ApiController {
         return driverAvailability;
     }
 
+
+    @Operation(summary = "Update a driver Availability, only user's if not Driver/Admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_DRIVER') || hasRole('ROLE_USER')")
+    @PutMapping("")
+    public DriverAvailability updateDriverAvailability(
+            @Parameter(name="id", description="long, Id of the DriverAvailability to be edited", 
+            required = true)
+            @RequestParam Long id,
+            @RequestBody @Valid DriverAvailability incoming) {
+
+        DriverAvailability driverAvailability;
+
+        if (getCurrentUser().getRoles().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ||
+        getCurrentUser().getRoles().contains(new SimpleGrantedAuthority("ROLE_DRIVER"))) {
+            driverAvailability = driverAvailabilityRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));}
+        else{
+            driverAvailability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())
+            .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));
+        }
+    
+    
+
+        driverAvailability.setDay(incoming.getDay());
+        driverAvailability.setStartTime(incoming.getStartTime());
+        driverAvailability.setEndTime(incoming.getEndTime());
+        driverAvailability.setNotes(incoming.getNotes());
+
+        driverAvailabilityRepository.save(driverAvailability);
+        return driverAvailability;
+    }
+
+  
     @Operation(summary = "Create a new Driver Availability")
     @PreAuthorize("hasRole('ROLE_DRIVER')")
     @PostMapping("/post")
@@ -86,6 +120,7 @@ public class DriverAvailabilityController extends ApiController {
 
         return savedDriverAvailability;
     }
+
 
     @Operation(summary = "Delete an availability if owned by current user")
     @PreAuthorize("hasRole('ROLE_USER')")
