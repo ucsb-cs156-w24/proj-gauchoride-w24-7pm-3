@@ -27,8 +27,7 @@ import javax.validation.Valid;
 
 @Tag(name = "DriverAvailability Request")
 @RequestMapping("/api/driverAvailability")
-@RestController
-
+    @RestController
 public class DriverAvailabilityController extends ApiController {
 
     @Autowired
@@ -102,5 +101,15 @@ public class DriverAvailabilityController extends ApiController {
         
         return genericMessage("DriverAvailability with id %s deleted".formatted(id));
     }
+    
+    @Operation(summary = "List all availabilities of current user")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @GetMapping("")
+    public Iterable<DriverAvailability> allUserDriverAvailabilities() {
+        Iterable<DriverAvailability> availabilities;
+        availabilities = driverAvailabilityRepository.findAllByDriverId(getCurrentUser().getUser().getId());
+        return availabilities;
+    }
+
 }
 
