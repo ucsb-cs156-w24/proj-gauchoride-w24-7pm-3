@@ -28,7 +28,6 @@ import javax.validation.Valid;
 @Tag(name = "DriverAvailability Request")
 @RequestMapping("/api/driverAvailability")
 @RestController
-
 public class DriverAvailabilityController extends ApiController {
 
     @Autowired
@@ -88,7 +87,7 @@ public class DriverAvailabilityController extends ApiController {
     }
 
     @Operation(summary = "Delete an availability if owned by current user")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
     @DeleteMapping("")
     public Object deleteDriverAvailability(
         @Parameter(name="id", description="long, Id of the DriverAvailability to be deleted", 
@@ -102,5 +101,27 @@ public class DriverAvailabilityController extends ApiController {
         
         return genericMessage("DriverAvailability with id %s deleted".formatted(id));
     }
+    @Operation(summary = "List all availabilities of current user")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @GetMapping("")
+    public Iterable<DriverAvailability> allUserDriverAvailabilities() {
+        Iterable<DriverAvailability> availabilities;
+        availabilities = driverAvailabilityRepository.findAllByDriverId(getCurrentUser().getUser().getId());
+        return availabilities;
+    }
+
+    @Operation(summary = "Get a single availability by id, if user owns it")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    @GetMapping("/id")
+    public DriverAvailability getById(
+            @Parameter(name="id", description = "long, Id of the DriverAvailability to get", 
+            required = true)  
+            @RequestParam Long id) {
+        DriverAvailability driverAvailability;
+        driverAvailability = driverAvailabilityRepository.findByIdAndDriverId(id, getCurrentUser().getUser().getId())
+                .orElseThrow(() -> new EntityNotFoundException(DriverAvailability.class, id));;
+        return driverAvailability;
+    }
+
 }
 
