@@ -58,12 +58,12 @@ describe("DriverAvailabilityCreatePage tests", () => {
         const queryClient = new QueryClient();
         const availability = {
             day: "Sunday",
-            shiftStart: "11:40AM",
-            shiftEnd: "11:59AM",
+            startTime: "11:40AM",
+            endTime: "11:59AM",
             notes: "hi"
         };
 
-        axiosMock.onPost("/api/driverAvailability/new").reply(202, availability);
+        axiosMock.onPost("/api/driverAvailability/post").reply(202, availability);
 
         const {getByTestId} = render(
             <QueryClientProvider client={queryClient}>
@@ -97,8 +97,8 @@ describe("DriverAvailabilityCreatePage tests", () => {
 
         // Simulating filling out the form
         fireEvent.change(dayInput, { target: { value: availability.day } });
-        fireEvent.change(shiftStartInput, { target: { value: availability.shiftStart } });
-        fireEvent.change(shiftEndInput, { target: { value: availability.shiftEnd } });
+        fireEvent.change(shiftStartInput, { target: { value: availability.startTime } });
+        fireEvent.change(shiftEndInput, { target: { value: availability.endTime } });
         fireEvent.change(driverNotes, {target: { value: String(availability.notes) } });
 
         expect(submitButton).toBeInTheDocument();
@@ -113,7 +113,7 @@ describe("DriverAvailabilityCreatePage tests", () => {
 
         // Assert that the toast and navigate functions were called with expected values
         expect(mockToast).toBeCalledWith(`New availability -day: ${availability.day}, shiftStart: ${availability.startTime}, shiftEnd: ${availability.endTime}, notes: ${availability.notes}`);
-        expect(mockNavigate).toBeCalledWith({ "to": "/api/driverAvailability" });
+        expect(mockNavigate).toBeCalledWith({ "to": "/driverAvailability" });
 
     });
 });
